@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>{% block title %}FastAPI App{% endblock %}</title>
+    <title>Event Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
 </head>
 <body>
     <nav>
-        <a href="/">Login</a> |
+        <a href="/">Home</a>
+        <a href="/events">Events</a>
+        <a href="/bookings">Book Ticket</a>
+        <a href="/login">Login</a>
         <a href="/register">Register</a>
     </nav>
     <div class="container">
