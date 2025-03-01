@@ -1,0 +1,22 @@
+{
+  "name": "event-service",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000E\u0000v\u0000e\u0000n\u0000t\u0000 \u0000S\u0000e\u0000r\u0000v\u0000i\u0000c\u0000e\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mongodb": "^6.14.0",
+    "mongoose": "^8.11.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0"
+  }
+}
