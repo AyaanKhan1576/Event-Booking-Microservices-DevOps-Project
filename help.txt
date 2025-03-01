@@ -2,6 +2,9 @@ conda activate user-service-env
 conda activate notification-service-env
 ayaan/user-notification-service
 
+user service: uvicorn main:app --reload
+
+
 PORTS
 user-service : 
 notification-service : 5001
