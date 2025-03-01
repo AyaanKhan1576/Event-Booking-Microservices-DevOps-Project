@@ -5,3 +5,8 @@ psycopg2
 pydantic
 alembic
 python-multipart
+python-dotenv
+requests
+passlib
+jinja2
+itsdangerous

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Ticket</title>
+</head>
+<body>
+    <h2>Book a Ticket</h2>
+    <form action="/book" method="post">
+        <label>Event ID:</label>
+        <input type="text" name="event_id" required><br>
+
+        <label>Number of Tickets:</label>
+        <input type="number" name="tickets" required><br>
+
+        <button type="submit">Book Now</button>
+    </form>
+    <a href="/home">Home</a>
+    <a href="/logout/">Logout</a>
+</body>
+</html>

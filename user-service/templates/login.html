@@ -1,12 +1,22 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
     <h2>Login</h2>
-    <form method="post" action="/login/">
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/login/" method="post">
         <label>Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" required><br>
+        
         <label>Password:</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required><br>
+
         <button type="submit">Login</button>
     </form>
-{% endblock %}
+    <p>Don't have an account? <a href="/register">Register here</a></p>
+</body>
+</html>

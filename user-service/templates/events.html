@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+</head>
+<body>
+    <h2>Available Events</h2>
+    <ul>
+        {% for event in events %}
+            <li>{{ event["name"] }} - {{ event["date"] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/book">Book a Ticket</a>
+    <a href="/home">Home</a>
+    <a href="/logout/">Logout</a>
+</body>
+</html>
