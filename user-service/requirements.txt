@@ -10,3 +10,4 @@ requests
 passlib
 jinja2
 itsdangerous
+bcrypt
