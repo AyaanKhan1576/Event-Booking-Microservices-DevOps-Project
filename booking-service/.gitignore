@@ -1,0 +1,32 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Flask-specific files
+.env        # Environment variables for sensitive data
+instance/   # Instance folder for Flask app configurations
+
+# Database migrations folder (Flask-Migrate)
+migrations/
+
+# Virtual environment folder (commonly named 'venv')
+venv/
+.venv/
+
+# Dependency directories
+node_modules/
+
+# Docker-related files
+Dockerfile
+
+# Python dependencies file
+requirements.txt
+
+# IDE-related files (VS Code example)
+.vscode/
+
+# Miscellaneous
+*.log        # Log files
+*.sqlite     # SQLite database files
+*.db         # Database files
