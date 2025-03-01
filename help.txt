@@ -1,0 +1,3 @@
+conda activate user-service-env
+conda activate notification-service-env
+ayaan/user-notification-service
