@@ -1,3 +1,9 @@
 conda activate user-service-env
 conda activate notification-service-env
 ayaan/user-notification-service
+
+PORTS
+user-service : 
+notification-service : 5001
+event-service : 5000
+booking-service 
