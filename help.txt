@@ -4,6 +4,7 @@ ayaan/user-notification-service
 
 user service: uvicorn main:app --reload
 
+help
 
 PORTS
 user-service : 
