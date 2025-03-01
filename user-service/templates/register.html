@@ -1,12 +1,25 @@
-{% extends "base.html" %}
-{% block title %}Register{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
     <h2>Register</h2>
-    <form method="post" action="/register/">
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/register/" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" required><br>
+
         <label>Email:</label>
-        <input type="email" name="email" required>
+        <input type="email" name="email" required><br>
+
         <label>Password:</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" required><br>
+
         <button type="submit">Register</button>
     </form>
-{% endblock %}
+    <p>Already have an account? <a href="/">Login here</a></p>
+</body>
+</html>
