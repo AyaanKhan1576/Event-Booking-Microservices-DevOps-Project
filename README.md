@@ -1,5 +1,9 @@
 # CS4067 Event Booking Microservices
 
+## Contributors
+- **Ayaan Khan (22i-0832)**
+- **Minahil Ali (22i-0849)**
+
 ## Overview
 This repository contains the code for an Event Booking application built using a microservices architecture. The project is divided into the following services:
 - **User Service:** Handles user authentication and profiles.
@@ -127,9 +131,6 @@ git commit -m "Added new feature"
 git push origin feature-branch
 ```
 
-## Contributors
-- **Ayaan Khan**
-- **Minahil Ali**
 
 ## License
 This project is licensed under the MIT License.
