@@ -4,6 +4,10 @@ ayaan/user-notification-service
 
 user service: uvicorn main:app --reload
 
+db.events.find().pretty()
+db.events.deleteMany({})
+
+
 help
 
 PORTS

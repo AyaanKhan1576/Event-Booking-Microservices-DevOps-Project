@@ -1,30 +1,34 @@
+const mongoose = require("mongoose");
 const Event = require("../models/eventModel");
+const { ObjectId } = mongoose.Types; // Import ObjectId
 
-// Predefined events
 const sampleEvents = [
   {
-    name: "Oktoberfest",
-    date: new Date("2024-09-21T10:00:00.000Z"),
-    location: "Munich, Germany",
-    description: "The world's largest beer festival with great music and food.",
+    _id: 1,
+    name: "Tech Conference 2025",
+    date: "2025-03-15T10:00:00Z",
+    location: "New York Convention Center",
+    description: "A conference for tech enthusiasts.",
     price: 50,
-    availableTickets: 5000,
+    availableTickets: 100,
   },
   {
-    name: "Coachella",
-    date: new Date("2024-04-12T18:00:00.000Z"),
-    location: "California, USA",
-    description: "A massive annual music and arts festival.",
-    price: 400,
-    availableTickets: 10000,
+    _id: 2,
+    name: "Music Festival",
+    date: "2025-04-20T12:00:00Z",
+    location: "Los Angeles Open Grounds",
+    description: "A grand music festival featuring top artists.",
+    price: 75,
+    availableTickets: 200,
   },
   {
-    name: "Tomorrowland",
-    date: new Date("2024-07-19T12:00:00.000Z"),
-    location: "Boom, Belgium",
-    description: "The biggest electronic dance music festival.",
-    price: 300,
-    availableTickets: 15000,
+    _id: 3,
+    name: "Startup Networking Event",
+    date: "2025-05-10T18:00:00Z",
+    location: "San Francisco Tech Hub",
+    description: "Meet investors and startup founders.",
+    price: 30,
+    availableTickets: 150,
   },
 ];
 
@@ -45,8 +49,26 @@ exports.createEvent = async (req, res) => {
 
 exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find();
-    res.status(200).json(events);
+    let events = await Event.find();
+
+    // If no events are in the DB, return sampleEvents
+    if (events.length === 0) {
+      events = sampleEvents;
+    }
+
+    const formattedEvents = events.map((event, index) => ({
+      _id: event._id || new ObjectId(),  // Use event._id if available, otherwise use the index as a fallback
+      name: event.name,
+      date: new Date(event.date).toISOString().split("T")[0],
+      location: event.location,
+      description: event.description,
+      price: event.price,
+      availableTickets: event.availableTickets,
+    }));
+    
+
+
+    res.status(200).json(formattedEvents);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
