@@ -1,62 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Events</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Events</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <h2>Available Events</h2>
+    <h1>Available Events</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
     {% if events %}
-        <table>
+        <table border="1">
             <thead>
                 <tr>
+                    <th>Event ID</th>
                     <th>Name</th>
                     <th>Date</th>
-                    <th>Action</th>
+                    <th>Location</th>
+                    <th>Price</th>
                 </tr>
             </thead>
             <tbody>
                 {% for event in events %}
                     <tr>
-                        <td>{{ event["name"] }}</td>
-                        <td>{{ event["date"] }}</td>
-                        <td>
-                            <a href="/book?event_id={{ event['_id'] }}">Book Now</a>
-                        </td>
+                        <td>{{ event.eventId }}</td> <!-- Fixed: event_id -> eventId -->
+                        <td>{{ event.name }}</td>
+                        <td>{{ event.date }}</td>
+                        <td>{{ event.location }}</td>
+                        <td>${{ event.price }}</td> <!-- Added Price -->
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>No events available at the moment. Please check back later.</p>
+        <p>No events available at the moment.</p>
     {% endif %}
-    <br>
-    <a href="/home">Home</a> | <a href="/logout/">Logout</a>
+
+    <a href="/home">Back to Home</a>
 </body>
 </html>
