@@ -1,0 +1,15 @@
+2025-03-06 19:37:45,223 - DEBUG - Calling on_field_start with no data
+2025-03-06 19:37:45,224 - DEBUG - Calling on_field_name with data[0:5]
+2025-03-06 19:37:45,224 - DEBUG - Calling on_field_data with data[6:19]
+2025-03-06 19:37:45,224 - DEBUG - Calling on_field_end with no data
+2025-03-06 19:37:45,224 - DEBUG - Calling on_field_start with no data
+2025-03-06 19:37:45,225 - DEBUG - Calling on_field_name with data[20:28]
+2025-03-06 19:37:45,225 - DEBUG - Calling on_field_data with data[29:30]
+2025-03-06 19:37:45,225 - DEBUG - Calling on_field_end with no data
+2025-03-06 19:37:45,226 - DEBUG - Calling on_end with no data
+2025-03-06 19:37:48,011 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-06 19:37:52,069 - ERROR - Error fetching events: HTTPConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /api/events (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001BCDA7F6F90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-03-06 19:38:26,871 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-06 19:38:26,907 - DEBUG - http://localhost:5000 "GET /api/events HTTP/1.1" 200 523
+2025-03-06 19:41:45,981 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-06 19:41:45,989 - DEBUG - http://localhost:5000 "GET /api/events HTTP/1.1" 200 523
