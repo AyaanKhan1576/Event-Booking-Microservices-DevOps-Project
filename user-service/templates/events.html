@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Events</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Available Events</h1>
+    <div class="events-container">
+        <h1>Available Events</h1>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
 
-    {% if events %}
-        <table border="1">
+        {% if events %}
+        <table class="events-table">
             <thead>
                 <tr>
                     <th>Event ID</th>
@@ -26,20 +27,21 @@
             </thead>
             <tbody>
                 {% for event in events %}
-                    <tr>
-                        <td>{{ event.eventId }}</td> <!-- Fixed: event_id -> eventId -->
-                        <td>{{ event.name }}</td>
-                        <td>{{ event.date }}</td>
-                        <td>{{ event.location }}</td>
-                        <td>${{ event.price }}</td> <!-- Added Price -->
-                    </tr>
+                <tr>
+                    <td>{{ event.eventId }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>{{ event.location }}</td>
+                    <td>${{ event.price }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
+        {% else %}
         <p>No events available at the moment.</p>
-    {% endif %}
+        {% endif %}
 
-    <a href="/home">Back to Home</a>
+        <a href="/home" class="back-btn">Back to Home</a>
+    </div>
 </body>
 </html>

@@ -4,28 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 <body>
-    <h2>Book a Ticket</h2>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <a href="/" class="logo">Event Booker</a>
+                <div class="nav-links">
+                    <a href="/home">Home</a>
+                    <a href="/events">Events</a>
+                    <a href="/book">Book Ticket</a>
+                    <a href="/register">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    {% if error %}
-        <div style="color: red; font-weight: bold; margin-bottom: 20px;">
+    <div class="container">
+        <h2>Book a Ticket</h2>
+
+        {% if error %}
+        <div class="error-message">
             {{ error }}
         </div>
-    {% endif %}
+        {% endif %}
 
-    <form action="/book" method="post">
-        <label for="event_id">Event ID:</label>
-        <input type="number" name="event_id" required><br>
-    
-        <label for="tickets">Number of Tickets:</label>
-        <input type="number" name="tickets" required><br>
-    
-        <button type="submit">Book Now</button>
-    </form>
+        <form action="/book" method="post" class="booking-form">
+            <label for="event_id">Event ID:</label>
+            <input type="number" name="event_id" required><br>
+        
+            <label for="tickets">Number of Tickets:</label>
+            <input type="number" name="tickets" required><br>
+        
+            <button type="submit" class="submit-btn">Book Now</button>
+        </form>
 
-    <br>
-    <a href="/home">Home</a>
-    <a href="/logout/">Logout</a>
+        <br>
+        <div class="links">
+            <a href="/home" class="footer-link">Home</a>
+            <a href="/logout/" class="footer-link">Logout</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Event Booking App | Designed with ❤️</p>
+    </footer>
 </body>
 </html>

@@ -984,3 +984,127 @@
 2025-03-07 20:19:22,793 - DEBUG - Calling on_end with no data
 2025-03-07 20:19:22,796 - DEBUG - Starting new HTTP connection (1): localhost:5001
 2025-03-07 20:19:26,892 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 84
+2025-03-07 20:55:26,505 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:55:26,506 - DEBUG - Calling on_field_name with data[0:5]
+2025-03-07 20:55:26,507 - DEBUG - Calling on_field_data with data[6:24]
+2025-03-07 20:55:26,507 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:55:26,508 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:55:26,508 - DEBUG - Calling on_field_name with data[25:33]
+2025-03-07 20:55:26,508 - DEBUG - Calling on_field_data with data[34:39]
+2025-03-07 20:55:26,510 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:55:26,511 - DEBUG - Calling on_end with no data
+2025-03-07 20:55:35,117 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-07 20:55:35,175 - DEBUG - http://localhost:5000 "GET /api/events HTTP/1.1" 200 594
+2025-03-07 20:55:47,577 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:55:47,578 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 20:55:47,579 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 20:55:47,579 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:55:47,579 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:55:47,580 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 20:55:47,580 - DEBUG - Calling on_field_data with data[19:20]
+2025-03-07 20:55:47,581 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:55:47,582 - DEBUG - Calling on_end with no data
+2025-03-07 20:55:47,586 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 20:55:51,790 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 84
+2025-03-07 20:57:29,866 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:57:29,866 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 20:57:29,867 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 20:57:29,868 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:57:29,868 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:57:29,868 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 20:57:29,870 - DEBUG - Calling on_field_data with data[19:21]
+2025-03-07 20:57:29,871 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:57:29,872 - DEBUG - Calling on_end with no data
+2025-03-07 20:57:29,875 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 20:57:31,950 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 500 47
+2025-03-07 20:57:31,951 - ERROR - Error booking ticket: 500 Server Error: INTERNAL SERVER ERROR for url: http://localhost:5001/book_ticket
+2025-03-07 20:57:42,261 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:57:42,261 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 20:57:42,262 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 20:57:42,263 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:57:42,263 - DEBUG - Calling on_field_start with no data
+2025-03-07 20:57:42,265 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 20:57:42,267 - DEBUG - Calling on_field_data with data[19:23]
+2025-03-07 20:57:42,269 - DEBUG - Calling on_field_end with no data
+2025-03-07 20:57:42,270 - DEBUG - Calling on_end with no data
+2025-03-07 20:57:42,272 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 20:57:44,332 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 400 41
+2025-03-07 20:57:44,333 - ERROR - Error booking ticket: 400 Client Error: BAD REQUEST for url: http://localhost:5001/book_ticket
+2025-03-07 21:49:26,634 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:26,635 - DEBUG - Calling on_field_name with data[0:5]
+2025-03-07 21:49:26,637 - DEBUG - Calling on_field_data with data[6:24]
+2025-03-07 21:49:26,637 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:26,639 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:26,639 - DEBUG - Calling on_field_name with data[25:33]
+2025-03-07 21:49:26,640 - DEBUG - Calling on_field_data with data[34:39]
+2025-03-07 21:49:26,643 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:26,643 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:31,257 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-07 21:49:31,274 - DEBUG - http://localhost:5000 "GET /api/events HTTP/1.1" 200 594
+2025-03-07 21:49:39,951 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:39,952 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:39,953 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:39,953 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:39,954 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:39,955 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:39,955 - DEBUG - Calling on_field_data with data[19:23]
+2025-03-07 21:49:39,956 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:39,957 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:39,962 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:42,013 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 500 47
+2025-03-07 21:49:42,014 - ERROR - Error booking ticket: 500 Server Error: INTERNAL SERVER ERROR for url: http://localhost:5001/book_ticket
+2025-03-07 21:49:48,527 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:48,528 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:48,530 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:48,532 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:48,533 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:48,533 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:48,534 - DEBUG - Calling on_field_data with data[19:22]
+2025-03-07 21:49:48,535 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:48,536 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:48,541 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:51,396 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:51,397 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:51,398 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:51,398 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:51,399 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:51,400 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:51,402 - DEBUG - Calling on_field_data with data[19:22]
+2025-03-07 21:49:51,403 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:51,403 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:51,411 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:52,399 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:52,399 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:52,400 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:52,401 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:52,402 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:52,403 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:52,403 - DEBUG - Calling on_field_data with data[19:22]
+2025-03-07 21:49:52,404 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:52,405 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:52,410 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:52,897 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 86
+2025-03-07 21:49:54,858 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:54,859 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:54,859 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:54,860 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:54,861 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:54,862 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:54,863 - DEBUG - Calling on_field_data with data[19:22]
+2025-03-07 21:49:54,863 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:54,866 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:54,869 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:55,533 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 86
+2025-03-07 21:49:55,984 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:55,984 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-07 21:49:55,985 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-07 21:49:55,986 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:55,986 - DEBUG - Calling on_field_start with no data
+2025-03-07 21:49:55,987 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-07 21:49:55,987 - DEBUG - Calling on_field_data with data[19:22]
+2025-03-07 21:49:55,988 - DEBUG - Calling on_field_end with no data
+2025-03-07 21:49:55,989 - DEBUG - Calling on_end with no data
+2025-03-07 21:49:55,994 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-07 21:49:56,553 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 84
+2025-03-07 21:49:58,942 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 86
+2025-03-07 21:50:00,120 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 86

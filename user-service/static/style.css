@@ -1,40 +1,119 @@
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #fce0f1; /* Soft pink background */
+    color: #4a4a4a; /* Dark gray text color */
 }
 
-nav {
-    background-color: #007bff;
-    padding: 15px;
+h2, h1 {
+    color: #f85f73; /* Bright pink color */
     text-align: center;
 }
 
-nav a {
-    color: white;
-    margin: 0 15px;
+a {
     text-decoration: none;
+    color: #f85f73;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
-.container {
-    max-width: 600px;
-    margin: 20px auto;
+a:hover {
+    color: #ff87a4; /* Lighter pink */
+}
+
+/* Containers */
+.container, .events-container, .dashboard-container, .home-container, .login-container, .register-container, .status-container {
+    max-width: 1200px;
+    margin: 30px auto;
     padding: 20px;
-    background: white;
+    background-color: #fff; /* White background for content */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Form Styling */
+input[type="email"], input[type="password"], input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #f85f73;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
 }
 
 button {
-    background: #007bff;
-    color: white;
+    background-color: #f85f73;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 20px;
     border: none;
-    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
+    width: 100%;
 }
 
 button:hover {
-    background: #0056b3;
+    background-color: #ff87a4;
+}
+
+/* Error Styling */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Table Styling */
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.events-table th, .events-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #f85f73;
+}
+
+.events-table th {
+    background-color: #f85f73;
+    color: white;
+}
+
+/* Links Styling */
+.back-btn, .action-btn, .register-link, .login-link {
+    background-color: #f85f73;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover, .action-btn:hover, .register-link:hover, .login-link:hover {
+    background-color: #ff87a4;
+}
+
+footer {
+    background-color: #f85f73;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
 }
