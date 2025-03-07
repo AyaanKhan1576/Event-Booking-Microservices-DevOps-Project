@@ -1,19 +1,46 @@
 const Event = require("../models/Event");
-const { v4: uuidv4 } = require("uuid");
 
 // Populate the database with some events if empty
 const initializeEvents = async () => {
     const eventsExist = await Event.countDocuments();
     if (eventsExist === 0) {
         const sampleEvents = [
-            { eventId: uuidv4(), name: "Tech Conference 2025", date: "2025-06-12", location: "New York", price: 100 },
-            { eventId: uuidv4(), name: "Music Festival", date: "2025-07-20", location: "Los Angeles", price: 80 },
-            { eventId: uuidv4(), name: "Art Exhibition", date: "2025-09-05", location: "San Francisco", price: 50 }
+            {
+                eventId: 1,
+                name: "Tech Conference 2025",
+                date: "2025-06-12",
+                location: "New York",
+                price: 100,
+                availableTickets: 500,  // available tickets (will be calculated)
+                totalTickets: 500,  // total tickets available
+                bookedTickets: 0  // no tickets booked initially
+            },
+            {
+                eventId: 2,
+                name: "Music Festival",
+                date: "2025-07-20",
+                location: "Los Angeles",
+                price: 80,
+                availableTickets: 1000,
+                totalTickets: 1000,
+                bookedTickets: 0
+            },
+            {
+                eventId: 3,
+                name: "Art Exhibition",
+                date: "2025-09-05",
+                location: "San Francisco",
+                price: 50,
+                availableTickets: 300,
+                totalTickets: 300,
+                bookedTickets: 0
+            }
         ];
         await Event.insertMany(sampleEvents);
         console.log("📌 Sample Events Inserted");
     }
 };
+
 
 // Get all events
 const getAllEvents = async (req, res) => {
@@ -28,12 +55,46 @@ const getAllEvents = async (req, res) => {
 // Get single event by eventId
 const getEventByEventId = async (req, res) => {
     try {
-        const event = await Event.findOne({ eventId: req.params.eventId });
+        const eventId = Number(req.params.eventId); // ✅ Convert param to number
+        const event = await Event.findOne({ eventId });
+
         if (!event) return res.status(404).json({ message: "Event not found" });
+
         res.json(event);
     } catch (error) {
-        res.status(500).json({ message: " Error retrieving event" });
+        res.status(500).json({ message: "Error retrieving event" });
     }
 };
 
-module.exports = { initializeEvents, getAllEvents, getEventByEventId };
+// Check availability of an event
+const checkAvailability = async (req, res) => {
+    const eventId = Number(req.params.event_id); // Convert param to number
+
+    try {
+        const event = await Event.findOne({ eventId });
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const availableTickets = event.totalTickets - event.bookedTickets;
+
+        res.json({ 
+            event_id: eventId, 
+            availableTickets, 
+            isAvailable: availableTickets > 0 
+        });
+
+    } catch (error) {
+        console.error("Error checking availability:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+
+module.exports = { 
+    initializeEvents, 
+    getAllEvents, 
+    getEventByEventId, 
+    checkAvailability
+};

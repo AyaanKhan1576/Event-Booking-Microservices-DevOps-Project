@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Booking Status</h2>
+
+    {% if message %}
+        <div style="color: green; font-weight: bold; margin-bottom: 20px;">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    {% if booking_id %}
+        <p>Your Booking ID: {{ booking_id }}</p>
+    {% endif %}
+
+    <a href="/home">Back to Home</a>
+{% endblock %}

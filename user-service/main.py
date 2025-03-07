@@ -218,3 +218,55 @@ def book_ticket_page(request: Request):
         return RedirectResponse(url="/", status_code=303)
     
     return templates.TemplateResponse("book_ticket.html", {"request": request, "user": user})
+
+BOOKING_SERVICE_URL = "http://localhost:5001/book_ticket"  # Change to actual URL
+@app.post("/book")
+def book_ticket(
+    request: Request,
+    event_id: int = Form(...),
+    tickets: int = Form(...),
+):
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/", status_code=303)
+
+    booking_data = {
+        "user_id": request.session["user_id"],  # Fetch user ID from session
+        "event_id": event_id,
+        "tickets": tickets
+    }
+
+    try:
+        response = requests.post(BOOKING_SERVICE_URL, json=booking_data, timeout=10)
+        response.raise_for_status()
+
+        # Check if there is an issue with ticket availability
+        if response.status_code == 400 and "Not enough tickets available" in response.text:
+            return templates.TemplateResponse(
+                "book_ticket.html",
+                {"request": request, "user": user, "error": "Not enough tickets available for this event."}
+            )
+
+        # Successful booking
+        if response.status_code == 201:
+            booking_id = response.json().get("booking_id")  # Get the booking ID from the response
+            message = "Booking successful!"
+
+            # Redirect to the booking_successful.html page
+            return templates.TemplateResponse(
+                "booking_success.html",
+                {"request": request, "user": user, "message": message, "booking_id": booking_id}
+            )
+
+        # General booking failure
+        else:
+            return templates.TemplateResponse(
+                "book_ticket.html",
+                {"request": request, "user": user, "error": "Booking failed."}
+            )
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error booking ticket: {e}")
+        return templates.TemplateResponse(
+            "book_ticket.html",
+            {"request": request, "user": user, "error": "Service unavailable."}
+        )
