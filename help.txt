@@ -1,17 +1,40 @@
-conda activate user-service-env
-conda activate notification-service-env
-ayaan/user-notification-service
+LAUNCH SERVICES
 
-user service: uvicorn main:app --reload
+user service: uvicorn main:app --reload --port 8000
+booking-service: flask run --host=0.0.0.0 --port=5001
+new-event-service: nodse server.js
+notification-servie: node server.js
 
+
+DATABASES:
+See all Tables: \dt
+See all Databases: \l
+Select Database: \c DatabaseName
+
+Booking: 
+psql -U postgres -d bookingdb  
+postgresql://postgres:123456789@localhost:5432/bookingdb
+
+Event:
+mongodb://localhost:27017/new-eventdb
+
+Mongo Commands:
 db.events.find().pretty()
 db.events.deleteMany({})
 
 
-help
+PORTS:
 
-PORTS
-user-service : 
-notification-service : 5001
+user-service : 8000
+notification-service : 5002
 event-service : 5000
-booking-service 
+booking-service : 5001
+
+
+Within Booking Service when running new project:
+1. Delete existing migrations folder
+2. flask db upgrade  # Ensure migrations are applied
+3. flask db init
+4. flask db migrate -m "Initial migration"
+5. flask db upgrade
+

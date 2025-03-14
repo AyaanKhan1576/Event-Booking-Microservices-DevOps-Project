@@ -20,8 +20,9 @@ node_modules/
 # Docker-related files
 Dockerfile
 
-# Python dependencies file
-requirements.txt
+booking-service.log
+
+erl_crash.dump
 
 # IDE-related files (VS Code example)
 .vscode/
