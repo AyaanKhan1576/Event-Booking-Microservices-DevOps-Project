@@ -1,0 +1,237 @@
+# version: '3.8'
+
+# services:
+#   # PostgreSQL container: default database is user_service_db; init.sql creates bookingdb
+#   postgres:
+#     image: postgres:latest
+#     container_name: postgres
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 123456789
+#       POSTGRES_DB: user_service_db
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#     networks:
+#       - app-network
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+
+
+#   # MongoDB container for event and notification services
+#   mongodb:
+#     image: mongo:latest
+#     container_name: mongodb
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo_data:/data/db
+#     networks:
+#       - app-network
+
+#   # RabbitMQ container with management UI
+#   rabbitmq:
+#     image: rabbitmq:3-management
+#     container_name: rabbitmq
+#     ports:
+#       - "5672:5672"
+#       - "15672:15672"
+#     networks:
+#       - app-network
+
+#   # User Service (FastAPI)
+#   user-service:
+#     build:
+#       context: ./user-service
+#       dockerfile: Dockerfile
+#     container_name: user-service
+#     ports:
+#       - "8000:8000"
+#     env_file:
+#       - ./user-service/.env
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     networks:
+#       - app-network
+
+
+#   # Booking Service (Flask)
+#   booking-service:
+#     build:
+#       context: ./booking-service
+#       dockerfile: Dockerfile
+#     container_name: booking-service
+#     ports:
+#       - "5001:5001"
+#     env_file:
+#       - ./booking-service/.env
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     command: >
+#       sh -c "flask db upgrade && flask run --host=0.0.0.0 --port=5001"
+#     networks:
+#       - app-network
+
+#   # New Event Service (Node.js)
+#   new-event-service:
+#     build:
+#       context: ./new-event-service
+#       dockerfile: Dockerfile
+#     container_name: new-event-service
+#     ports:
+#       - "5000:5000"
+#     env_file:
+#       - ./new-event-service/.env
+#     depends_on:
+#       - mongodb
+#     networks:
+#       - app-network
+
+
+#   # Notification Service (Express.js)
+#   notification-service:
+#     build:
+#       context: ./notification-service
+#       dockerfile: Dockerfile.main  # Ensure Dockerfile.main runs your main service (server.js)
+#     container_name: notification-service
+#     ports:
+#       - "5002:5002"
+#     env_file:
+#       - ./notification-service/.env
+#     depends_on:
+#       - mongodb
+#       - rabbitmq
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+# volumes:
+#   postgres_data:
+#   mongo_data:
+
+version: '3.8'
+
+services:
+  # PostgreSQL container: Creates both `user_service_db` and `bookingdb`
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_DB: user_service_db  # Default DB; bookingdb is created via init.sql
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Ensure bookingdb is created
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB container for event and notification services
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  # RabbitMQ container with management UI
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+  # User Service (FastAPI)
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./user-service/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # Booking Service (Flask)
+  booking-service:
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    container_name: booking-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./booking-service/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+
+  # New Event Service (Node.js)
+  new-event-service:
+    build:
+      context: ./new-event-service
+      dockerfile: Dockerfile
+    container_name: new-event-service
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./new-event-service/.env
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  # Notification Service (Express.js)
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile.main
+    container_name: notification-service
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./notification-service/.env
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongo_data:

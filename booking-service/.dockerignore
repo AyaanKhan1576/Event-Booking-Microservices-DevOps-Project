@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Flask-specific files
+.env        # Environment variables for sensitive data
 instance/   # Instance folder for Flask app configurations
 
 # Database migrations folder (Flask-Migrate)
@@ -15,9 +17,11 @@ venv/
 # Dependency directories
 node_modules/
 
-
+# Docker-related files
+Dockerfile
 
 booking-service.log
+.gitignore
 
 erl_crash.dump
 

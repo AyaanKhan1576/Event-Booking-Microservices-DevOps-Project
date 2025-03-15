@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 sqlalchemy
-psycopg2
 pydantic
 alembic
 python-multipart
@@ -11,3 +10,5 @@ passlib
 jinja2
 itsdangerous
 bcrypt
+psycopg2-binary
+

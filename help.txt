@@ -4,6 +4,7 @@ user service: uvicorn main:app --reload --port 8000
 booking-service: flask run --host=0.0.0.0 --port=5001
 new-event-service: nodse server.js
 notification-servie: node server.js
+notification-test: node test-producer.js
 
 
 DATABASES:
@@ -37,4 +38,63 @@ Within Booking Service when running new project:
 3. flask db init
 4. flask db migrate -m "Initial migration"
 5. flask db upgrade
+
+
+DOCKER CONTAINERS:
+
+User: 
+(Until Postgres is mentioned in docker compose)
+docker run -e DATABASE_URL="postgresql://postgres:123456789@host.docker.internal:5432/user_service_db" -p 8000:8000 user-service:latest
+(otherwise)
+docker run --env-file .env -p 8000:8000 user-service:latest
+
+User:
+docker run --env-file .env -p 8000:8000 user-service:latest
+EVENT_SERVICE_URL=http://new-event-service:5000/api/events ( if running locally use localhost:5000/api/events )
+BOOKING_SERVICE_URL=http://booking-service:5001/book_ticket
+
+
+
+(if host)
+DATABASE_URL=postgresql://postgres:123456789@host.docker.internal:5432/user_service_db
+(if container)
+DATABASE_URL=postgresql://postgres:123456789@postgres:5432/user_service_db
+
+
+Booking:
+docker run --env-file .env -p 5001:5001 booking-service:latest
+
+otherwise in env Change
+(if host)
+DATABASE_URL=postgresql://postgres:123456789@host.docker.internal:5432/booking_service_db
+CELERY_BROKER_URL=pyamqp://guest:guest@host.docker.internal//
+
+(if container)
+DATABASE_URL=postgresql://postgres:123456789@postgres:5432/bookingdb
+CELERY_BROKER_URL=pyamqp://guest:guest@rabbitmq//
+
+
+Event: (Change these in env)
+
+docker run --env-file .env -p 5000:5000 new-event-service:latest
+
+(If mongo on Host)
+MONGO_URI=mongodb://host.docker.internal:27017/new-eventdb
+(If mongo in container)
+MONGO_URI=mongodb://mongodb:27017/new-eventdb
+
+
+Notification:
+docker run --env-file .env -p 5002:5002 notification-service-main:latest
+docker run --env-file .env notification-service-test:latest
+
+(if host)
+MONGO_URI=mongodb://host.docker.internal:27017/notifications-service-db
+RABBITMQ_URL=amqp://host.docker.internal
+
+(if container)
+MONGO_URI=mongodb://mongo:27017/notifications-service-db
+RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+
+
 

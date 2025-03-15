@@ -1144,3 +1144,25 @@
 2025-03-15 00:57:42,474 - DEBUG - Calling on_end with no data
 2025-03-15 00:57:42,479 - DEBUG - Starting new HTTP connection (1): localhost:5001
 2025-03-15 00:57:46,529 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 83
+2025-03-15 05:27:45,443 - DEBUG - Calling on_field_start with no data
+2025-03-15 05:27:45,444 - DEBUG - Calling on_field_name with data[0:5]
+2025-03-15 05:27:45,444 - DEBUG - Calling on_field_data with data[6:19]
+2025-03-15 05:27:45,445 - DEBUG - Calling on_field_end with no data
+2025-03-15 05:27:45,445 - DEBUG - Calling on_field_start with no data
+2025-03-15 05:27:45,445 - DEBUG - Calling on_field_name with data[20:28]
+2025-03-15 05:27:45,446 - DEBUG - Calling on_field_data with data[29:30]
+2025-03-15 05:27:45,446 - DEBUG - Calling on_field_end with no data
+2025-03-15 05:27:45,446 - DEBUG - Calling on_end with no data
+2025-03-15 05:27:46,573 - DEBUG - Starting new HTTP connection (1): localhost:5000
+2025-03-15 05:27:46,612 - DEBUG - http://localhost:5000 "GET /api/events HTTP/1.1" 200 594
+2025-03-15 05:27:51,987 - DEBUG - Calling on_field_start with no data
+2025-03-15 05:27:51,987 - DEBUG - Calling on_field_name with data[0:8]
+2025-03-15 05:27:51,987 - DEBUG - Calling on_field_data with data[9:10]
+2025-03-15 05:27:51,988 - DEBUG - Calling on_field_end with no data
+2025-03-15 05:27:51,988 - DEBUG - Calling on_field_start with no data
+2025-03-15 05:27:51,988 - DEBUG - Calling on_field_name with data[11:18]
+2025-03-15 05:27:51,988 - DEBUG - Calling on_field_data with data[19:20]
+2025-03-15 05:27:51,988 - DEBUG - Calling on_field_end with no data
+2025-03-15 05:27:51,989 - DEBUG - Calling on_end with no data
+2025-03-15 05:27:51,994 - DEBUG - Starting new HTTP connection (1): localhost:5001
+2025-03-15 05:27:56,138 - DEBUG - http://localhost:5001 "POST /book_ticket HTTP/1.1" 201 83

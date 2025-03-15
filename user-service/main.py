@@ -145,8 +145,8 @@ def raw_events_page(request: Request):
 # ------------------------------
 # EVENTS PAGE
 # ------------------------------
-
-EVENT_SERVICE_URL = "http://localhost:5000/api/events"
+EVENT_SERVICE_URL = os.getenv("EVENT_SERVICE_URL", "http://new-event-service:5000/api/events")
+# EVENT_SERVICE_URL = "http://localhost:5000/api/events"
 
 # @app.get("/events", response_class=HTMLResponse)
 # def events_page(request: Request):
@@ -219,7 +219,8 @@ def book_ticket_page(request: Request):
     
     return templates.TemplateResponse("book_ticket.html", {"request": request, "user": user})
 
-BOOKING_SERVICE_URL = "http://localhost:5001/book_ticket"  # Change to actual URL
+#BOOKING_SERVICE_URL = "http://localhost:5001/book_ticket"  # Change to actual URL
+BOOKING_SERVICE_URL = os.getenv("BOOKING_SERVICE_URL", "http://booking-service:5001/book_ticket")
 @app.post("/book")
 def book_ticket(
     request: Request,
