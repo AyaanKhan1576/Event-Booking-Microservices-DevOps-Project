@@ -7,8 +7,8 @@ const eventSchema = new mongoose.Schema({
     location: { type: String, required: true },
     price: { type: Number, required: true },
     availableTickets: { type: Number, required: true },
-    bookedTickets: { type: Number, default: 0 }, // ✅ Track booked tickets
-    totalTickets: { type: Number, required: true }, // ✅ Total tickets available
+    bookedTickets: { type: Number, default: 0 }, 
+    totalTickets: { type: Number, required: true }, 
 });
 
 const Event = mongoose.model("Event", eventSchema);

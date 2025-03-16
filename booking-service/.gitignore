@@ -15,8 +15,6 @@ venv/
 # Dependency directories
 node_modules/
 
-
-
 booking-service.log
 
 erl_crash.dump

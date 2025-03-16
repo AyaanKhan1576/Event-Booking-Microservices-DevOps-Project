@@ -9,7 +9,6 @@ import logging
 import os
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
-
 from database import SessionLocal, engine
 from models import Base, User
 from auth import hash_password, authenticate_user
@@ -39,19 +38,15 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(SessionMiddleware, secret_key="123456789")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (change to specific domains if needed)
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize database
 Base.metadata.create_all(bind=engine)
-
-# Jinja2 Templates
 templates = Jinja2Templates(directory="templates")
 
-# Dependency to get DB Session
 def get_db():
     db = SessionLocal()
     try:
@@ -148,22 +143,6 @@ def raw_events_page(request: Request):
 EVENT_SERVICE_URL = os.getenv("EVENT_SERVICE_URL", "http://new-event-service:5000/api/events")
 # EVENT_SERVICE_URL = "http://localhost:5000/api/events"
 
-# @app.get("/events", response_class=HTMLResponse)
-# def events_page(request: Request):
-#     user = request.session.get("email")
-#     if not user:
-#         return RedirectResponse(url="/", status_code=303)
-
-#     try:
-#         response = requests.get(EVENT_SERVICE_URL, timeout=100)
-#         response.raise_for_status()
-#         events = response.json()
-#     except requests.exceptions.RequestException as e:
-#         logger.error("Error fetching events: %s", e)
-#         events = []
-
-#     return templates.TemplateResponse("events.html", {"request": request, "user": user, "events": events})
-
 @app.get("/events")
 def events_page(request: Request):
     user = get_current_user(request)
@@ -180,36 +159,10 @@ def events_page(request: Request):
 
     return templates.TemplateResponse("events.html", {"request": request, "user": user, "events": events})
 
-# @app.get("/events")
-# def events_page(request: Request):
-#     user = get_current_user(request)
-#     if not user:
-#         return RedirectResponse(url="/", status_code=303)
-    
-#     try:
-#         response = requests.get("http://127.0.0.1:5000/api/events", timeout=100)
-#         response.raise_for_status()
-#         try:
-#             events = response.json()
-#         except Exception as json_err:
-#             logger.error("JSON decoding error: %s", json_err)
-#             events = []
-#         if not isinstance(events, list):
-#             logger.error("Unexpected events format: %s", events)
-#             events = []
-#     except Exception as e:
-#         logger.error("Error fetching events: %s", e)
-#         return templates.TemplateResponse(
-#             "events.html",
-#             {"request": request, "user": user, "events": [], "error": "Failed to load events."}
-#         )
 
-#     logger.info("Fetched events: %s", events)
-#     try:
-#         return templates.TemplateResponse("events.html", {"request": request, "user": user, "events": events})
-#     except Exception as tpl_err:
-#         logger.error("Template rendering error: %s", tpl_err)
-#         raise tpl_err
+# ------------------------------
+# BOOKING PAGE
+# ------------------------------
 
 @app.get("/book")
 def book_ticket_page(request: Request):
@@ -232,7 +185,7 @@ def book_ticket(
         return RedirectResponse(url="/", status_code=303)
 
     booking_data = {
-        "user_id": request.session["user_id"],  # Fetch user ID from session
+        "user_id": request.session["user_id"],  
         "event_id": event_id,
         "tickets": tickets
     }
@@ -250,7 +203,7 @@ def book_ticket(
 
         # Successful booking
         if response.status_code == 201:
-            booking_id = response.json().get("booking_id")  # Get the booking ID from the response
+            booking_id = response.json().get("booking_id")  
             message = "Booking successful!"
 
             # Redirect to the booking_successful.html page

@@ -6,12 +6,10 @@ const amqp = require("amqplib");
 const app = express();
 app.use(express.json());
 
-// Load environment variables
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 const RABBITMQ_URL = process.env.RABBITMQ_URL;
 
-// MongoDB Schema for Notifications
 const notificationSchema = new mongoose.Schema({
   userId: String,
   message: String,
@@ -19,12 +17,10 @@ const notificationSchema = new mongoose.Schema({
 });
 const Notification = mongoose.model("Notification", notificationSchema);
 
-// Connect to MongoDB
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-// RabbitMQ Consumer to Listen for Messages
 async function consumeMessages() {
   try {
     const connection = await amqp.connect(RABBITMQ_URL);
@@ -37,11 +33,9 @@ async function consumeMessages() {
         const notification = JSON.parse(msg.content.toString());
         console.log("🔔 Received Notification:", notification);
 
-        // Save to MongoDB
         await Notification.create(notification);
         console.log("✅ Notification saved to DB");
 
-        // Acknowledge the message
         channel.ack(msg);
       }
     });
@@ -58,5 +52,4 @@ app.get("/notifications", async (req, res) => {
   res.json(notifications);
 });
 
-// Start the Express Server
 app.listen(PORT, () => console.log(`🚀 Notification Service running on port ${PORT}`));

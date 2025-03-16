@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: notification-service
-  namespace: OnlineEventBookingAyaanKhan
+  namespace: online-event-booking-ayaankhan
   labels:
     app: notification-service
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: notification-service
-        image: notification-service:latest
+        image: ayaankhan17/notification-service:latest
         ports:
         - containerPort: 5002
         env:
@@ -50,7 +50,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: notification-service
-  namespace: OnlineEventBookingAyaanKhan
+  namespace: online-event-booking-ayaankhan
 spec:
   selector:
     app: notification-service

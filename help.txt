@@ -42,6 +42,9 @@ Within Booking Service when running new project:
 
 DOCKER CONTAINERS:
 
+docker-compose up --build -d
+docker-compose down -v
+
 User: 
 (Until Postgres is mentioned in docker compose)
 docker run -e DATABASE_URL="postgresql://postgres:123456789@host.docker.internal:5432/user_service_db" -p 8000:8000 user-service:latest
@@ -95,6 +98,37 @@ RABBITMQ_URL=amqp://host.docker.internal
 (if container)
 MONGO_URI=mongodb://mongo:27017/notifications-service-db
 RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+
+
+Kubernetes:
+
+kubectl delete namespace online-event-booking-ayaankhan
+
+kubectl apply -f namespace.yaml
+
+kubectl apply -f deployment-service-postgres.yaml
+kubectl apply -f deployment-service-mongodb.yaml
+kubectl apply -f deployment-service-rabbitmq.yaml
+kubectl apply -f deployment-service-user.yaml
+kubectl apply -f deployment-service-event.yaml
+kubectl apply -f deployment-service-booking.yaml
+kubectl apply -f deployment-service-notification.yaml
+
+kubectl apply -f configmap.yaml
+kubectl apply -f secrets.yaml
+kubectl apply -f ingress.yaml
+
+kubectl get pods -n online-event-booking-ayaankhan
+kubectl get svc -n online-event-booking-ayaankhan
+kubectl get ingress -n online-event-booking-ayaankhan
+kubectl logs user-service-6b5798475b-wl2lk -n online-event-booking-ayaankhan
+
+kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
+
+kubectl get pods -n ingress-nginx
+kubectl get ingress -n online-event-booking-ayaankhan
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
 
 
 

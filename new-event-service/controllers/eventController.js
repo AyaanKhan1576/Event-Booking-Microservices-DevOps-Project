@@ -11,9 +11,9 @@ const initializeEvents = async () => {
                 date: "2025-06-12",
                 location: "New York",
                 price: 100,
-                availableTickets: 500,  // available tickets (will be calculated)
-                totalTickets: 500,  // total tickets available
-                bookedTickets: 0  // no tickets booked initially
+                availableTickets: 500,  
+                totalTickets: 500,  
+                bookedTickets: 0  
             },
             {
                 eventId: 2,
@@ -55,7 +55,7 @@ const getAllEvents = async (req, res) => {
 // Get single event by eventId
 const getEventByEventId = async (req, res) => {
     try {
-        const eventId = Number(req.params.eventId); // ✅ Convert param to number
+        const eventId = Number(req.params.eventId);
         const event = await Event.findOne({ eventId });
 
         if (!event) return res.status(404).json({ message: "Event not found" });
@@ -68,7 +68,7 @@ const getEventByEventId = async (req, res) => {
 
 // Check availability of an event
 const checkAvailability = async (req, res) => {
-    const eventId = Number(req.params.event_id); // Convert param to number
+    const eventId = Number(req.params.event_id); 
 
     try {
         const event = await Event.findOne({ eventId });

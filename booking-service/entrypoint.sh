@@ -15,11 +15,19 @@
 #!/bin/sh
 set -e  # Exit on error
 
-# Remove old migrations directory if it exists
-if [ -d "migrations" ]; then
-    echo "Removing old migrations..."
-    rm -rf migrations
-fi
+echo "Waiting for Postgres to be ready..."
+while ! pg_isready -h postgres -p 5432 -U postgres; do
+    sleep 2
+done
+echo "Postgres is ready."
+
+# Drop the alembic_version table from the database
+echo "Dropping alembic_version table if exists..."
+psql "$DATABASE_URL" -c "DROP TABLE IF EXISTS alembic_version;" || echo "Could not drop alembic_version table, proceeding anyway."
+
+# Remove old migrations 
+echo "Removing old migrations directory..."
+rm -rf migrations
 
 # Reinitialize migrations
 echo "Initializing new migrations..."

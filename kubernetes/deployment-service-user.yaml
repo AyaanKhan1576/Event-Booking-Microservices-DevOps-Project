@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
-  namespace: OnlineEventBookingAyaanKhan
+  namespace: online-event-booking-ayaankhan
   labels:
     app: user-service
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: user-service:latest
+        image: ayaankhan17/user-service:latest
         ports:
         - containerPort: 8000
         env:
@@ -53,7 +53,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: user-service
-  namespace: OnlineEventBookingAyaanKhan
+  namespace: online-event-booking-ayaankhan
 spec:
   selector:
     app: user-service

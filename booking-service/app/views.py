@@ -2,7 +2,7 @@ from app import app, db
 import requests
 from flask import request, jsonify
 from app.models import TicketBooking, Payment
-from app.tasks import process_payment  # Async task for RabbitMQ
+from app.tasks import process_payment  
 import os
 
 

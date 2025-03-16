@@ -2,18 +2,20 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
-  namespace: OnlineEventBookingAyaanKhan
+  namespace: online-event-booking-ayaankhan
 data:
-  # User Service settings
-  userEventServiceUrl: "http://new-event-service:5000/api/events"
-  userBookingServiceUrl: "http://booking-service:5001/book_ticket"
-  # Event Service settings
+  # User Service 
+  userEventServiceUrl: "http://new-event-service/api/events"
+  userBookingServiceUrl: "http://booking-service/book_ticket"
+  # Event Service 
   eventMongoUri: "mongodb://mongodb:27017/new-eventdb"
-  # Notification Service settings
+  # Notification Service 
   notificationMongoUri: "mongodb://mongodb:27017/notifications-service-db"
   notificationRabbitmqUrl: "amqp://guest:guest@rabbitmq:5672"
   notificationCeleryBrokerUrl: "pyamqp://guest:guest@rabbitmq//"
-  # Booking Service settings
-  bookingEventServiceUrl: "http://new-event-service:5000/api/events"
+  # Booking Service 
+  bookingEventServiceUrl: "http://new-event-service/api/events"
   bookingCeleryBrokerUrl: "pyamqp://guest:guest@rabbitmq//"
-  bookingPaymentGatewayUrl: "http://booking-service:5001/payments"
+  bookingPaymentGatewayUrl: "http://booking-service/payments"
+
+  init.sql: CREATE DATABASE bookingdb;
