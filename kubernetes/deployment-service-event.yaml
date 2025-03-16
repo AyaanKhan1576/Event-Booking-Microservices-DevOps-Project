@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: new-event-service
+  namespace: OnlineEventBookingAyaanKhan
+  labels:
+    app: new-event-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: new-event-service
+  template:
+    metadata:
+      labels:
+        app: new-event-service
+    spec:
+      containers:
+      - name: new-event-service
+        image: new-event-service:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PORT
+          value: "5000"
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: eventMongoUri
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: new-event-service
+  namespace: OnlineEventBookingAyaanKhan
+spec:
+  selector:
+    app: new-event-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP

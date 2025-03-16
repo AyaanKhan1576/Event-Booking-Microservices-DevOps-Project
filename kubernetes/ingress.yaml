@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: online-event-booking-ingress
+  namespace: OnlineEventBookingYourName
+  annotations:
+    # Uncomment and adjust the rewrite-target if your backend requires URL modification.
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: localhost  # Replace with your domain in production.
+    http:
+      paths:
+      # Frontend (user-service): serves pages like /, /register, /home, /events, /book
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80
+      # Event Service API
+      - path: /api/events
+        pathType: Prefix
+        backend:
+          service:
+            name: new-event-service
+            port:
+              number: 80
+      # Booking Service API for booking tickets
+      - path: /api/book_ticket
+        pathType: Prefix
+        backend:
+          service:
+            name: booking-service
+            port:
+              number: 80
+      # Booking Service API for payments
+      - path: /api/payments
+        pathType: Prefix
+        backend:
+          service:
+            name: booking-service
+            port:
+              number: 80
