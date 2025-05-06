@@ -243,7 +243,7 @@ kubectl apply -f configmap.yaml
 kubectl apply -f secrets.yaml
 
 kubectl apply -f ingress.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
 
 kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
 
