@@ -118,6 +118,8 @@ kubectl apply -f configmap.yaml
 kubectl apply -f secrets.yaml
 kubectl apply -f ingress.yaml
 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
 kubectl get pods -n online-event-booking-ayaankhan
 kubectl get svc -n online-event-booking-ayaankhan
 kubectl get ingress -n online-event-booking-ayaankhan
@@ -127,7 +129,7 @@ kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
 
 kubectl get pods -n ingress-nginx
 kubectl get ingress -n online-event-booking-ayaankhan
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
 
 
 
