@@ -218,6 +218,35 @@ npm install
 node server.js
 ```
 
+
+## Docker Compose:
+
+docker-compose up --build -d
+docker-compose down -v
+
+
+## Kubernetes:
+
+Go to kubernetes/ folder
+
+kubectl apply -f namespace.yaml
+
+kubectl apply -f deployment-service-postgres.yaml
+kubectl apply -f deployment-service-mongodb.yaml
+kubectl apply -f deployment-service-rabbitmq.yaml
+kubectl apply -f deployment-service-user.yaml
+kubectl apply -f deployment-service-event.yaml
+kubectl apply -f deployment-service-booking.yaml
+kubectl apply -f deployment-service-notification.yaml
+
+kubectl apply -f configmap.yaml
+kubectl apply -f secrets.yaml
+
+kubectl apply -f ingress.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
+
 ## Git Workflow
 ```sh
 git checkout -b feature-branch
