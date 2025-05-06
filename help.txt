@@ -130,6 +130,12 @@ kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
 kubectl get pods -n ingress-nginx
 kubectl get ingress -n online-event-booking-ayaankhan
 
+to fix the ingres thing:
+kubectl get svc -n ingress-nginx
+kubectl patch svc ingress-nginx-controller -n ingress-nginx --type='json' -p '[{"op": "replace", "path": "/spec/type", "value": "LoadBalancer"}]'
+kubectl get svc -n ingress-nginx
+kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8080:80
+
 
 
 
