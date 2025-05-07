@@ -37,13 +37,15 @@ jobs:
           docker compose exec -T rabbitmq rabbitmqctl await_startup
           sleep 15
 
+      - name: Check User Service
+        run: |
+          # Test GET endpoint (register page)
+          curl -sSf http://localhost:8000/register || exit 1
+          # Test POST endpoint (dummy check)
+          curl -X POST -sSf http://localhost:8000/login/ -d "email=abc@gmail.com&password=1234567890" || exit 1
+
       - name: Run availability checks
         run: |
-          # Check User Service with retries and HTML validation
-          curl --retry 5 --retry-delay 10 --retry-all-errors \
-               --max-time 30 --fail-with-body \
-               -sS http://localhost:8000/ | grep -q "<title>Login</title>"
-
           # Check Booking Service endpoint
           curl --retry 3 --retry-delay 5 \
                -sS http://localhost:5001/book_ticket || exit 1
