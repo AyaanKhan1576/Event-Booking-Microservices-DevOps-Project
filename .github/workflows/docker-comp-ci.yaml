@@ -27,7 +27,29 @@ jobs:
 
       - name: Build and start containers
         run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml up -d
+          docker compose -f docker-compose.yml build
+          docker compose -f docker-compose.yml up -d
+      
+      - name: Wait for services to be ready
+        run: |
+          docker-compose exec -T postgres pg_isready -U postgres
+          docker-compose exec -T mongodb mongo --eval "db.stats()"
+          docker-compose exec -T rabbitmq rabbitmqctl await_startup
 
-      # ... rest of the steps remain the same
+      - name: Run integration tests
+        run: |
+          # Test user-service
+          curl -sSf http://localhost:8000/healthcheck || exit 1
+          
+          # Test booking-service
+          curl -sSf http://localhost:5001/healthcheck || exit 1
+          
+          # Test new-event-service
+          curl -sSf http://localhost:5000/api/events || exit 1
+          
+          # Test notification-service
+          curl -sSf http://localhost:5002/health || exit 1
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose -f docker-compose.yml down -v
