@@ -66,5 +66,5 @@ jobs:
         run: |
           docker run --network host \
           -e RABBITMQ_URL="amqp://guest:guest@localhost:5672" \
-          ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }} \
+          ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest \
           node test-producer.js
