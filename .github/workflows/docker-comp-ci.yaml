@@ -42,7 +42,7 @@ jobs:
           curl -sS http://localhost:8000/ || exit 1
     
           # Booking Service (Flask)
-          curl -sS http://booking-service:5001/book_ticket || exit 1
+          curl -sS http://localhost:5001/book_ticket || exit 1
     
           # Event Service (Node.js)
           curl -sS http://localhost:5000/api/events || exit 1
