@@ -25,9 +25,9 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./notification-service  # Adjust path if needed
+          context: ./notification-service
           file: ./notification-service/Dockerfile.main
-          push: ${{ github.event_name == 'push' }}  # Only push on direct pushes (not PRs)
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }}
@@ -39,8 +39,7 @@ jobs:
       rabbitmq:
         image: rabbitmq:3-management
         ports:
-          - 5672:5672  # AMQP port
-          # - 15672:15672  # Management UI (optional)
+          - 5672:5672
         env:
           RABBITMQ_DEFAULT_USER: guest
           RABBITMQ_DEFAULT_PASS: guest
@@ -50,17 +49,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Test Producer via Docker
-        run:  docker run --network host \
-          -e RABBITMQ_URL=amqp://guest:guest@localhost:5672 \
-          ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }} \
-          node test-producer.js
-      # - name: Navigate to notification-service
-      #   run: cd ./notification-service
-
-      # - name: Install dependencies
-      #   run: npm install
-
-      # - name: Run test producer
-      #   run: node test-producer.js
-      #   env:
-      #     RABBITMQ_URL: amqp://guest:guest@localhost:5672
+        run: |
+          docker run --network host \
+            -e RABBITMQ_URL="amqp://guest:guest@localhost:5672" \
+            ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }} \
+            node test-producer.js
