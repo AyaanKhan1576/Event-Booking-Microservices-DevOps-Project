@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const eventRoutes = require("./routes/eventRoutes");
 const { initializeEvents } = require("./controllers/eventController");
 
+// .env
 dotenv.config();
 
 connectDB();
