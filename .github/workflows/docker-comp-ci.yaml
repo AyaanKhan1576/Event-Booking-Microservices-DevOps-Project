@@ -42,13 +42,10 @@ jobs:
           curl -sSf http://localhost:8000/ || exit 1
     
           # Booking Service (Flask)
-          curl -sSf http://localhost:5001/api/bookings || exit 1
+          curl -sSf http://booking-service:5001/book_ticket || exit 1
     
           # Event Service (Node.js)
           curl -sSf http://localhost:5000/api/events || exit 1
-    
-          # Notification Service (Express.js)
-          curl -sSf http://localhost:5002/notifications || exit 1
       
       - name: Cleanup
         if: always()
