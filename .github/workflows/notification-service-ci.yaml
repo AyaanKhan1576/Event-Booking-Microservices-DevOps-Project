@@ -1,0 +1,70 @@
+name: Notification Service CI/CD
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./notification-service
+          file: ./notification-service/Dockerfile.main
+          push: ${{ github.event_name == 'push' }}
+          load: ${{ github.event_name != 'push' }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }}
+
+  test-with-rabbitmq:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    services:
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Pull Docker Image
+        if: github.event_name == 'push'
+        run: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${{ github.sha }}
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest
+    
+      - name: Run Test Producer via Docker
+        run: |
+          docker run --network host \
+          -e RABBITMQ_URL="amqp://guest:guest@localhost:5672" \
+          ${{ secrets.DOCKERHUB_USERNAME }}/notification-service:latest \
+          node test-producer.js
