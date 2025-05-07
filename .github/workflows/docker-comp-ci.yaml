@@ -32,9 +32,9 @@ jobs:
       
       - name: Wait for services to be ready
         run: |
-          docker-compose exec -T postgres pg_isready -U postgres
-          docker-compose exec -T mongodb mongo --eval "db.stats()"
-          docker-compose exec -T rabbitmq rabbitmqctl await_startup
+          docker compose exec -T postgres pg_isready -U postgres
+          docker compose exec -T mongodb mongo --eval "db.stats()"
+          docker compose exec -T rabbitmq rabbitmqctl await_startup
 
       - name: Run integration tests
         run: |
@@ -52,4 +52,4 @@ jobs:
 
       - name: Cleanup
         if: always()
-        run: docker-compose -f docker-compose.yml down -v
+        run: docker compose -f docker-compose.yml down -v
