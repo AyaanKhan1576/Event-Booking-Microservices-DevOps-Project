@@ -1,2 +1,10 @@
 erl_crash.dump
 package-lock.json
+
+# Terraform-related files
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+help.txt

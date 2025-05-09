@@ -1,0 +1,21 @@
+terraform init
+terraform plan
+ssh-keygen -t rsa -b 4096 -f $HOME\.ssh\id_rsa #change the addr to wherever id_rse and id_rsa.pd r stored
+#also change this in main.tf in resource "aws_key_pair" "deployer" cidr_block
+
+terraform apply
+copy the instance_ip
+
+#change permissions of where id_rsa are stored to read only and so only u can edit them
+icacls "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" /inheritance:r /grant:r "$($env:USERNAME):R"
+
+scp -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" -r 
+"D:\semester 6\uni projects in D\devops proj\Event-Booking-Microservices-DevOps-Project" ec2-user@44.208.164.168:/home/ec2-user/
+
+ssh -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" ec2-user@44.208.164.168
+cd Event-Booking-Microservices-DevOps-Project
+docker compose up --build
+
+visit http://44.208.164.168:8000
+
+Ensure EC2 Security Group Allows Inbound Traffic

@@ -136,7 +136,112 @@ kubectl patch svc ingress-nginx-controller -n ingress-nginx --type='json' -p '[{
 kubectl get svc -n ingress-nginx
 kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8080:80
 
-
-
-
-
+Event Booking Project
+│
+├── .gitignore
+├── erl_crash.dump
+├── help.txt
+├── package-lock.json
+├── structure.txt
+├── README.md
+│
+├── .github
+│   └── workflows
+│       ├── booking-service-ci.yaml
+│       ├── docker-comp-ci.yaml
+│       ├── event-service-ci.yaml
+│       ├── notification-service-ci.yaml
+│       └── user-service-ci.yaml
+│
+├── booking-service
+│   ├── .env
+│   ├── .gitignore
+│   ├── booking-service.log
+│   ├── create_db.py
+│   ├── erl_crash.dump
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── run.py
+│   ├── app
+│   │   ├── config.py
+│   │   ├── models.py
+│   │   ├── tasks.py
+│   │   ├── utils.py
+│   │   ├── views.py
+│   │   ├── __init__.py
+│   │   └── __pycache__
+│   ├── migrations
+│   │   ├── alembic.ini
+│   │   ├── env.py
+│   │   ├── README
+│   │   └── script.py.mako
+│   └── __pycache__
+│
+├── new-event-service
+│   ├── .gitignore
+│   ├── package.json
+│   ├── server.js
+│   ├── config
+│   │   └── db.js
+│   ├── controllers
+│   │   └── eventController.js
+│   ├── models
+│   │   └── Event.js
+│   └── routes
+│       └── eventRoutes.js
+│
+├── notification-service
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   ├── server.js
+│   └── test-producer.js
+│
+├── user-service
+│   ├── .env
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── auth.py
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── logs
+│   │   └── user-service.log
+│   ├── routes
+│   │   ├── frontend.py
+│   │   └── __pycache__
+│   ├── static
+│   │   └── style.css
+│   ├── templates
+│   │   ├── base.html
+│   │   ├── booking_success.html
+│   │   ├── book_ticket.html
+│   │   ├── dashboard.html
+│   │   ├── events.html
+│   │   ├── home.html
+│   │   ├── login.html
+│   │   └── register.html
+│   └── __pycache__
+│
+├── kubernetes
+│   ├── configmap.yaml
+│   ├── deployment-service-booking.yaml
+│   ├── deployment-service-event.yaml
+│   ├── deployment-service-mongodb.yaml
+│   ├── deployment-service-notification.yaml
+│   ├── deployment-service-postgres.yaml
+│   ├── deployment-service-rabbitmq.yaml
+│   ├── deployment-service-user.yaml
+│   ├── ingress.yaml
+│   ├── namespace.yaml
+│   └── secrets.yaml
+│
+├── terraform
+│   ├── ec2-user-data.sh
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
