@@ -1,3 +1,4 @@
+# .github/workflows/user-service-ci.yml
 name: User Service CI/CD
 
 on:
@@ -9,6 +10,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,6 +25,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get short SHA as tag
+        id: meta
+        run: echo "tag=${GITHUB_SHA::8}" >> $GITHUB_OUTPUT
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -30,4 +37,30 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ steps.meta.outputs.tag }}
+
+  update-k8s-manifest:
+    needs: build-and-push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo with write access
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Update image in k8s/user-service-deployment.yaml
+        run: |
+          FILE="k8s/user-service-deployment.yaml"
+          TAG=${{ needs.build-and-push.outputs.image-tag }}
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/user-service:${TAG}"
+          echo "Patching $FILE → image: $IMAGE"
+          sed -i "s|image: .*|image: ${IMAGE}|" "$FILE"
+
+      - name: Commit & push manifest update
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: "ci: update user-service image to ${{ needs.build-and-push.outputs.image-tag }}"
+          push: true
