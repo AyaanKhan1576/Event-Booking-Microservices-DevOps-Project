@@ -1,0 +1,24 @@
+# roles/common/tasks/main.yml
+- name: install basic tools
+  yum:
+    name:
+      - git
+      - python3
+      - python3-pip
+    state: present
+    update_cache: true
+
+- name: upgrade pip itself (optional but safe)
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+
+- name: install docker-python stack with version pins
+  pip:
+    executable: pip3
+    name:
+      - "urllib3<2.0"                 # OpenSSL 1.0.2 compatible
+      - "requests<2.32.0"             # keeps urllib3<2
+      - "docker>=5.0.0,<6.0.0"        # Docker SDK
+      - "docker-compose>=1.29.0,<2.0" # Python module 'compose'

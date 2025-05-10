@@ -13,6 +13,8 @@ scp -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" -r
 "D:\semester 6\uni projects in D\devops proj\Event-Booking-Microservices-DevOps-Project" ec2-user@44.208.164.168:/home/ec2-user/
 
 ssh -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" ec2-user@44.208.164.168
+AK WSL: ssh -i /home/ayaan/University/.ssh/id_rsa ec2-user@54.237.197.131
+
 cd Event-Booking-Microservices-DevOps-Project
 docker compose up --build
 

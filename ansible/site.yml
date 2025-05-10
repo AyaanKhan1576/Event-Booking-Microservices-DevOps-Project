@@ -1,0 +1,7 @@
+- name: configure event-booking host
+  hosts: event_app
+  become: true
+  roles:
+    - common
+    - docker
+    - app-deploy

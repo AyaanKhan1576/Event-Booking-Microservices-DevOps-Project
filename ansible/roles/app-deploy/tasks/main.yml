@@ -1,0 +1,13 @@
+- name: pull or update microservice repo
+  git:
+    repo: https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git
+    dest: /home/ec2-user/Event-Booking-Microservices-DevOps-Project
+    version: main
+    update: yes
+    force: yes
+
+- name: build & start containers with Compose
+  community.docker.docker_compose:
+    project_src: /home/ec2-user/Event-Booking-Microservices-DevOps-Project
+    build: yes
+    state: present
