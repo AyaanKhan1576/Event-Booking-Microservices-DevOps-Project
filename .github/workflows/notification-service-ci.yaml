@@ -76,9 +76,9 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Update image in k8s/notification-service-deployment.yaml
+      - name: Update image in kubernetes/deployment-service-notification.yaml
         run: |
-          FILE="k8s/notification-service-deployment.yaml"
+          FILE="kubernetes/deployment-service-notification.yaml"
           TAG=${{ needs.build-and-push.outputs.image-tag }}
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/notification-service:${TAG}"
           echo "Patching $FILE → image: $IMAGE"

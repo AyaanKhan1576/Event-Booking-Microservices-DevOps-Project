@@ -49,9 +49,9 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Update image in k8s/user-service-deployment.yaml
+      - name: Update image in kubernetes/deployment-service-user.yaml
         run: |
-          FILE="k8s/user-service-deployment.yaml"
+          FILE="kubernetes/deployment-service-user.yaml"
           TAG=${{ needs.build-and-push.outputs.image-tag }}
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/user-service:${TAG}"
           echo "Patching $FILE → image: $IMAGE"
