@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: ayaankhan17/user-service:f3b6dfbb
+        image: ayaankhan17/user-service:9b3cd92c
         ports:
         - containerPort: 8000
         env:
