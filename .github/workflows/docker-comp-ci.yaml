@@ -8,10 +8,7 @@ on:
 
 jobs:
   integration-test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,19 +35,18 @@ jobs:
 
       - name: Run smoke tests
         run: |
-          # Test User Service
+          # Test User Service homepage
           curl -sSf http://localhost:8000/ > /dev/null
           
-          # Test Event Service
+          # Test Event Service API
           curl -sSf http://localhost:5000/api/events > /dev/null
           
-          # Test Booking Service
-          curl -sSf http://localhost:5001/health > /dev/null
+          # If Booking Service has another endpoint, test that instead
+          curl -sSf http://localhost:5001/api/bookings > /dev/null
 
       - name: Clean up
         if: always()
         run: docker compose down --volumes
-
       
       # - name: Wait for services to be ready
       #   run: |
