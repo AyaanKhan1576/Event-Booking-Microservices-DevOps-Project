@@ -1,14 +1,17 @@
-name: EventService CI/CD
+# .github/workflows/event-service-ci.yml
+name: Event Service CI/CD
 
 on:
   push:
     branches: ["main"]
   pull_request:
-    branches: [ main ]
+    branches: ["main"]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,12 +25,42 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get run-number as image tag
+        id: meta
+        run: echo "tag=${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./new-event-service  # Path to the service directory
+          context: ./new-event-service
           file: ./new-event-service/Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/event-service:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/event-service:${{ github.run_number }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/event-service:${{ steps.meta.outputs.tag }}
+
+  update-k8s-manifest:
+    needs: build-and-push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code with write access
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Update image tag in K8s manifest
+        run: |
+          FILE="k8s/event-service-deployment.yaml"
+          TAG=${{ needs.build-and-push.outputs.image-tag }}
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/event-service:${TAG}"
+          echo "Patching $FILE → image: $IMAGE"
+          sed -i "s|image: .*|image: ${IMAGE}|" "$FILE"
+
+      - name: Commit & push manifest bump
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: "ci: update event-service image to ${{ needs.build-and-push.outputs.image-tag }}"
+          push: true
