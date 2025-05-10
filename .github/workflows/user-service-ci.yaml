@@ -51,6 +51,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
+      
+      - name: Sync remote main
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git pull --rebase origin main
 
       - name: Update image in kubernetes/deployment-service-user.yaml
         run: |
