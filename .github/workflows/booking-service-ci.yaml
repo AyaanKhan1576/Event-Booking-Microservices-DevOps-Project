@@ -1,3 +1,37 @@
+# name: Booking Service CI/CD
+
+# on:
+#   push:
+#     branches: ["main"]
+#   pull_request:
+#     branches: ["main"]
+
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       - name: Build and Push Docker Image
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: ./booking-service
+#           file: ./booking-service/Dockerfile
+#           push: ${{ github.event_name == 'push' }}
+#           tags: |
+#             ${{ secrets.DOCKERHUB_USERNAME }}/booking-service:latest
+#             ${{ secrets.DOCKERHUB_USERNAME }}/booking-service:${{ github.sha }}
+# .github/workflows/booking-service-ci.yml
 name: Booking Service CI/CD
 
 on:
@@ -9,6 +43,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,6 +58,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get short SHA tag
+        id: meta
+        run: echo "tag=${GITHUB_SHA::8}" >> $GITHUB_OUTPUT
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -30,4 +70,30 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/booking-service:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/booking-service:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/booking-service:${{ steps.meta.outputs.tag }}
+
+  update-k8s-manifest:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout code with write access
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Update image tag in Kubernetes manifest
+        run: |
+          FILE="k8s/booking-service-deployment.yaml"
+          TAG=${{ needs.build-and-push.outputs.image-tag }}
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/booking-service:${TAG}"
+          echo "Updating image in $FILE to $IMAGE"
+          sed -i "s|image: .*|image: ${IMAGE}|" "$FILE"
+
+      - name: Commit and push changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: github-actions@github.com
+          message: "ci: update booking-service image to ${{ needs.build-and-push.outputs.image-tag }}"
+          push: true
