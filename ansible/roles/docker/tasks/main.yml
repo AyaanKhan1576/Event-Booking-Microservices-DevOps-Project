@@ -1,0 +1,69 @@
+# - name: install Docker repo key
+#   get_url:
+#     url: https://download.docker.com/linux/centos/gpg
+#     dest: /etc/pki/rpm-gpg/Docker-GPG
+#     mode: '0644'
+
+# - name: enable Docker repository
+#   yum_repository:
+#     name: docker-ce
+#     description: Docker CE Stable
+#     baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+#     gpgcheck: yes
+#     gpgkey: file:///etc/pki/rpm-gpg/Docker-GPG
+
+# - name: install Docker engine & CLI
+#   yum:
+#     name:
+#       - docker-ce
+#       - docker-ce-cli
+#       - containerd.io
+#     state: latest
+
+# - name: start & enable docker
+#   service:
+#     name: docker
+#     state: started
+#     enabled: yes
+
+# - name: add ec2-user to docker group
+#   user:
+#     name: ec2-user
+#     groups: docker
+#     append: yes
+
+# - name: install docker-compose plugin
+#   get_url:
+#     url: "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64"
+#     dest: /usr/local/bin/docker-compose
+#     mode: '0755'
+
+# roles/docker/tasks/main.yml
+- name: Enable docker extras channel (Amazon Linux 2)
+  when: ansible_distribution == "Amazon" and ansible_distribution_major_version == "2"
+  command: amazon-linux-extras enable docker
+
+- name: Install Docker from Amazon repos
+  when: ansible_distribution == "Amazon" and ansible_distribution_major_version == "2"
+  yum:
+    name: docker
+    state: latest
+    update_cache: yes
+
+- name: Start & enable Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add ec2-user to docker group
+  user:
+    name: ec2-user
+    groups: docker
+    append: yes
+
+- name: Install docker-compose v2 standalone
+  get_url:
+    url: https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: "0755"

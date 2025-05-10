@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Launch ubuntu
 
 bash sudo apt update && sudo apt install -y python3-pip ansible git && pip3 install docker-compose ansible-collection-community-docker
@@ -26,3 +27,33 @@ ssh -i ~/.ssh/id_rsa ec2-user@<PUBLIC_IP>
 docker ps               # should list 4–5 containers
 curl http://localhost    # or individual service ports, confirm 200 OK
 exit
+=======
+Launch ubuntu
+
+bash sudo apt update && sudo apt install -y python3-pip ansible git && pip3 install docker-compose ansible-collection-community-docker
+ansible-galaxy collection install community.docker
+
+
+3. Copy your private key id_rsa into WSL	
+e.g., cp /mnt/c/Users/ayaan/Documents/University/AWS/.ssh/id_rsa ~/.ssh/
+chmod 600 ~/.ssh/id_rsa
+
+Update inventory.ini with the new IP
+Get the IP from Terraform 
+
+# 1) Ensure you are inside the ansible folder
+cd ~/Event-Booking-Microservices-DevOps-Project/ansible
+
+# 2) Ping the host (optional)
+ansible event_app -m ping
+
+# 3) Execute the full playbook
+ansible-playbook site.yml
+
+Verify
+
+ssh -i ~/.ssh/id_rsa ec2-user@<PUBLIC_IP>
+docker ps               # should list 4–5 containers
+curl http://localhost    # or individual service ports, confirm 200 OK
+exit
+>>>>>>> 798ea1060bd33e00e99b7e47906c46e78a91a6d6

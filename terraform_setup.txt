@@ -17,7 +17,9 @@ icacls "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" /inheritance:r /gra
 scp -i "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" -r 
 "C:\Users\ayaan\Documents\University\Semester 6\DevOps\Project\Project_Repo" ec2-user@54.237.197.131:/home/ec2-user/
 
-ssh -i "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" ec2-user@3.89.224.253
+ssh -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" ec2-user@44.208.164.168
+AK WSL: ssh -i /home/ayaan/University/.ssh/id_rsa ec2-user@54.237.197.131
+
 cd Event-Booking-Microservices-DevOps-Project
 docker compose up --build
 
