@@ -49,9 +49,9 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Update image tag in K8s manifest
+      - name: Update image tag in kubernetes/deployment-service-event.yaml
         run: |
-          FILE="k8s/event-service-deployment.yaml"
+          FILE="kubernetes/deployment-service-event.yaml"
           TAG=${{ needs.build-and-push.outputs.image-tag }}
           IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/event-service:${TAG}"
           echo "Patching $FILE → image: $IMAGE"
