@@ -1,21 +1,26 @@
 terraform init
 terraform plan
 ssh-keygen -t rsa -b 4096 -f $HOME\.ssh\id_rsa #change the addr to wherever id_rse and id_rsa.pd r stored
+FOR AK: C:\Users\ayaan\Documents\University\AWS\.ssh
+
 #also change this in main.tf in resource "aws_key_pair" "deployer" cidr_block
 
 terraform apply
 copy the instance_ip
+instance_ip = "3.89.224.253"
+
+CHANGE SECURITY GROUPS IN AWS
 
 #change permissions of where id_rsa are stored to read only and so only u can edit them
-icacls "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" /inheritance:r /grant:r "$($env:USERNAME):R"
+icacls "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" /inheritance:r /grant:r "$($env:USERNAME):R"
 
-scp -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" -r 
-"D:\semester 6\uni projects in D\devops proj\Event-Booking-Microservices-DevOps-Project" ec2-user@44.208.164.168:/home/ec2-user/
+scp -i "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" -r 
+"C:\Users\ayaan\Documents\University\Semester 6\DevOps\Project\Project_Repo" ec2-user@54.237.197.131:/home/ec2-user/
 
-ssh -i "D:\semester 6\uni projects in D\devops proj\.ssh\id_rsa" ec2-user@44.208.164.168
+ssh -i "C:\Users\ayaan\Documents\University\AWS\.ssh\id_rsa" ec2-user@3.89.224.253
 cd Event-Booking-Microservices-DevOps-Project
 docker compose up --build
 
-visit http://44.208.164.168:8000
+visit http://3.89.224.253:8000
 
 Ensure EC2 Security Group Allows Inbound Traffic
