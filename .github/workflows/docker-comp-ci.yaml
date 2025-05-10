@@ -32,6 +32,7 @@ jobs:
           docker compose run --rm wait-for postgres:5432 -t 30
           docker compose run --rm wait-for mongodb:27017 -t 30
           docker compose run --rm wait-for rabbitmq:5672 -t 30
+          sleep 60
 
       - name: Run smoke tests
         run: |
