@@ -36,7 +36,7 @@ jobs:
         with:
           context: ./user-service
           file: ./user-service/Dockerfile
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ steps.meta.outputs.tag }}
@@ -49,6 +49,7 @@ jobs:
       - name: Checkout repo with write access
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Update image in kubernetes/deployment-service-user.yaml
