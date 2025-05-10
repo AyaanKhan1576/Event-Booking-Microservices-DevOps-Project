@@ -36,7 +36,7 @@ jobs:
         with:
           context: ./new-event-service
           file: ./new-event-service/Dockerfile
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/event-service:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/event-service:${{ steps.meta.outputs.tag }}
@@ -49,6 +49,7 @@ jobs:
       - name: Checkout code with write access
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Update image tag in kubernetes/deployment-service-event.yaml

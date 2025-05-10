@@ -76,6 +76,7 @@ jobs:
       - name: Checkout repo with write access
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Update image in kubernetes/deployment-service-notification.yaml
