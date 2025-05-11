@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: notification-service
-        image: ayaankhan17/notification-service:4d51c3f7
+        image: ayaankhan17/notification-service:6d5e6f8e
         ports:
         - containerPort: 5002
         env:
