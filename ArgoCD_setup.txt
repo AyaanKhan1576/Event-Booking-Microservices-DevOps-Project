@@ -29,7 +29,7 @@ argocd account update-password `
   --new-password MyN3wP@ssw0rd
 
 
-admin password AK: 1wTmcq1TGkea2J-s
+Outdated admin password AK: 1wTmcq1TGkea2J-s
 
 Apply the Application manifest
 kubectl apply -f argocd-application.yaml
