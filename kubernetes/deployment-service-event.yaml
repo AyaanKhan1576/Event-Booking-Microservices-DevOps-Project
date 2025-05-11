@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: new-event-service
-        image: ayaankhan17/event-service:51
+        image: ayaankhan17/event-service:52
         ports:
         - containerPort: 5000
         env:
