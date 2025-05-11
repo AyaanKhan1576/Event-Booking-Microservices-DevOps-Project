@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: booking-service
-        image: ayaankhan17/booking-service:f7de923c
+        image: ayaankhan17/booking-service:6d5e6f8e
         ports:
         - containerPort: 5001
         env:
