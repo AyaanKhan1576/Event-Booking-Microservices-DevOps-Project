@@ -33,7 +33,11 @@ logger = logging.getLogger("my_app_logger")
 app = FastAPI()
 
 instrumentator = Instrumentator()
-Instrumentator().instrument(app).expose(app)
+instrumentator.instrument(app)
+
+@app.on_event("startup")
+async def expose_metrics():
+    instrumentator.expose(app)
 
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")
