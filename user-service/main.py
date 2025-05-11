@@ -225,4 +225,6 @@ def book_ticket(
             {"request": request, "user": user, "error": "Service unavailable."}
         )
 
-instrumentator = Instrumentator().instrument(app).expose(app)
+@app.on_event("startup")
+async def _startup():
+    Instrumentator().instrument(app).expose(app)
