@@ -59,6 +59,10 @@ kind: Service
 metadata:
   name: booking-service
   namespace: online-event-booking-ayaankhan
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "5001"
+    prometheus.io/path: "/metrics"
 spec:
   selector:
     app: booking-service

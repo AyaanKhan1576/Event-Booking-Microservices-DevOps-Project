@@ -24,3 +24,8 @@ celery.conf.update(app.config)
 
 # Import routes, models, and tasks after initializing the app
 from app import views, models, tasks
+
+from prometheus_flask_exporter import PrometheusMetrics
+
+# Attach Prometheus metrics to the Flask app
+metrics = PrometheusMetrics(app)

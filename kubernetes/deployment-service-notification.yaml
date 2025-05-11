@@ -51,6 +51,10 @@ kind: Service
 metadata:
   name: notification-service
   namespace: online-event-booking-ayaankhan
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "5002"
+    prometheus.io/path: "/metrics"
 spec:
   selector:
     app: notification-service

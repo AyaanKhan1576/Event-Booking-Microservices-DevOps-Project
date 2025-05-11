@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import logging
 import os
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from database import SessionLocal, engine
@@ -30,7 +31,6 @@ logging.basicConfig(
 logger = logging.getLogger("my_app_logger")
 
 app = FastAPI()
-
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -224,3 +224,5 @@ def book_ticket(
             "book_ticket.html",
             {"request": request, "user": user, "error": "Service unavailable."}
         )
+
+instrumentator = Instrumentator().instrument(app).expose(app)

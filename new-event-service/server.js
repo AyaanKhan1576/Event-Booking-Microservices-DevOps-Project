@@ -4,6 +4,9 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const eventRoutes = require("./routes/eventRoutes");
 const { initializeEvents } = require("./controllers/eventController");
+const promBundle = require("express-prom-bundle");
+const metricsMiddleware = promBundle({ includeMethod: true });
+
 
 // .env
 dotenv.config();
@@ -11,6 +14,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(metricsMiddleware);
 
 app.use(cors());
 app.use(express.json());
