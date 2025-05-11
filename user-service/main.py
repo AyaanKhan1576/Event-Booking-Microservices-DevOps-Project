@@ -31,6 +31,14 @@ logging.basicConfig(
 logger = logging.getLogger("my_app_logger")
 
 app = FastAPI()
+
+instrumentator = Instrumentator()
+instrumentator.instrument(app)
+
+@app.on_event("startup")
+async def expose_metrics():
+    instrumentator.expose(app)
+
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -43,7 +51,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-Instrumentator().instrument(app).expose(app)
+
 Base.metadata.create_all(bind=engine)
 templates = Jinja2Templates(directory="templates")
 
