@@ -1,0 +1,50 @@
+cd kubernetes
+
+Create namespace:
+kubectl apply -f argocd-namespace.yaml
+
+Install Argo CD core components
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+See if Pods running:
+kubectl -n argocd get pods
+
+Expose ArgoCD port
+kubectl port-forward svc/argocd-server -n argocd 8081:443
+
+
+# 1) Fetch & decode the initial admin password
+$b64 = kubectl -n argocd get secret argocd-initial-admin-secret `
+  -o jsonpath="{.data.password}"
+$bytes = [Convert]::FromBase64String($b64)
+$PASSWORD = [Text.Encoding]::UTF8.GetString($bytes)
+Write-Host "ArgoCD password: $PASSWORD"
+
+# 2) Log in to Argo CD on the port-forwarded UI (port 8081)
+argocd login localhost:8081 --username admin --password <that-password> --insecure
+
+# 3) (Optional) Change the password immediately:
+argocd account update-password `
+  --current-password $PASSWORD `
+  --new-password MyN3wP@ssw0rd
+
+
+admin password AK: 1wTmcq1TGkea2J-s
+
+Apply the Application manifest
+kubectl apply -f argocd-application.yaml
+
+ Verify your application
+ argocd app list
+ argocd app get online-event-booking
+
+ if says OutOfSync:
+ argocd app sync online-event-booking
+
+ TEST HERE:
+ http://localhost:8081/
+ USERNAME: admin
+ Password: (Same as retrieved earlier)
+
+
+

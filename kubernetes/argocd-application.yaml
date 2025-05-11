@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-event-booking
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git
+    targetRevision: HEAD
+    path: kubernetes
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: online-event-booking-ayaankhan
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
