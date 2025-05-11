@@ -136,6 +136,26 @@ kubectl patch svc ingress-nginx-controller -n ingress-nginx --type='json' -p '[{
 kubectl get svc -n ingress-nginx
 kubectl port-forward svc/ingress-nginx-controller -n ingress-nginx 8080:80
 
+PROMETHEUS AND GRAFANA
+http://localhost:<your_port>/metrics
+e.g. http://localhost:5000/metrics
+pip install the requirements for user and booking SERVICES
+this for event and notification services
+npm install prom-client express-prom-bundle
+
+user_service(requirements.txt)
+prometheus-fastapi-instrumentator
+
+GRAFANA PASSWORD
+PS D:\semester 6\uni projects in D\devops proj\Event-Booking-Microservices-DevOps-Project> $encoded = kubectl get secret --namespace monitoring grafana 
+-o jsonpath="{.data.admin-password}"
+PS D:\semester 6\uni projects in D\devops proj\Event-Booking-Microservices-DevOps-Project> [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encoded))
+dutPASRtplZJn2pJfzHxj1hiOAcz9JPbnqE73lGU
+
+kubectl apply -f monitoring/
+kubectl port-forward svc/grafana 3000:3000 -n online-event-booking-ayaankhan
+kubectl port-forward svc/prometheus -n online-event-booking-ayaankhan 9090:9090
+
 Event Booking Project
 │
 ├── .gitignore

@@ -41,11 +41,20 @@ kind: Service
 metadata:
   name: new-event-service
   namespace: online-event-booking-ayaankhan
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "5000"
+    prometheus.io/path: "/metrics"
 spec:
   selector:
     app: new-event-service
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
+      targetPort: 5000
+    - name: metrics
+      protocol: TCP
+      port: 5000
       targetPort: 5000
   type: ClusterIP

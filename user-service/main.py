@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import logging
 import os
+from prometheus_fastapi_instrumentator import Instrumentator
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from database import SessionLocal, engine
@@ -30,6 +31,13 @@ logging.basicConfig(
 logger = logging.getLogger("my_app_logger")
 
 app = FastAPI()
+
+instrumentator = Instrumentator()
+instrumentator.instrument(app)
+
+@app.on_event("startup")
+async def expose_metrics():
+    instrumentator.expose(app)
 
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")

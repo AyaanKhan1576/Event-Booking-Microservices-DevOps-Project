@@ -59,11 +59,20 @@ kind: Service
 metadata:
   name: booking-service
   namespace: online-event-booking-ayaankhan
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "5001"
+    prometheus.io/path: "/metrics"
 spec:
   selector:
     app: booking-service
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5001
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 5001
+      - name: metrics
+        protocol: TCP
+        port: 5001
+        targetPort: 5001
   type: ClusterIP

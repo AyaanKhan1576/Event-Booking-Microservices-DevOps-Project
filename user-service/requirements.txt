@@ -11,4 +11,4 @@ jinja2
 itsdangerous
 bcrypt
 psycopg2-binary
-
+prometheus-fastapi-instrumentator
