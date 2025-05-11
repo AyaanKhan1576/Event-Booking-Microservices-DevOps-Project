@@ -24,4 +24,4 @@ app.use("/api/events", eventRoutes);
 initializeEvents();
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Event Service running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Event Service running on port ${PORT}`));
