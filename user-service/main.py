@@ -43,7 +43,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+Instrumentator().instrument(app).expose(app)
 Base.metadata.create_all(bind=engine)
 templates = Jinja2Templates(directory="templates")
 
@@ -224,7 +224,3 @@ def book_ticket(
             "book_ticket.html",
             {"request": request, "user": user, "error": "Service unavailable."}
         )
-
-@app.on_event("startup")
-async def _startup():
-    Instrumentator().instrument(app).expose(app)

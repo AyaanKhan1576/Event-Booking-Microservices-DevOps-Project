@@ -67,7 +67,12 @@ spec:
   selector:
     app: booking-service
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5001
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 5001
+      - name: metrics
+        protocol: TCP
+        port: 5001
+        targetPort: 5001
   type: ClusterIP

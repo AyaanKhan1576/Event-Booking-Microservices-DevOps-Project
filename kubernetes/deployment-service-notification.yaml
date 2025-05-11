@@ -59,7 +59,12 @@ spec:
   selector:
     app: notification-service
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5002
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 5002
+      - name: metrics
+        protocol: TCP
+        port: 5002
+        targetPort: 5002
   type: ClusterIP
