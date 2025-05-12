@@ -3,6 +3,8 @@ this for event and notification services
 npm install prom-client express-prom-bundle
 
 RUN THESE IN THIS ORDER
+choco install kubernetes-helm
+helm version
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
@@ -19,7 +21,8 @@ kubectl port-forward svc/prometheus-server 9090:80 -n monitoring
 GRAFANA LOGIN CREDENTIALS
 
 USER NAME: admin
-password: dutPASRtplZJn2pJfzHxj1hiOAcz9JPbnqE73lGU
+minahils password: dutPASRtplZJn2pJfzHxj1hiOAcz9JPbnqE73lGU
+aks password: yfByE2qaWb0RCO8PF4z23NIJU2RszrANMUi6ukBF
 to generate ur own password:
 $encoded = kubectl get secret --namespace monitoring grafana 
 -o jsonpath="{.data.admin-password}"
