@@ -3,6 +3,7 @@
 ## Contributors
 - **Ayaan Khan (22i-0832)**
 - **Minahil Ali (22i-0849)**
+- **Mishal Ali (22i-1291)**
 
 ## Overview
 This repository contains the code for an Event Booking application built using a microservices architecture. The project is divided into the following services:
