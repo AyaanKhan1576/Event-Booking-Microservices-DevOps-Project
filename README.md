@@ -1,70 +1,60 @@
-# Event Booking Microservices Platform
+# Event Booking Microservices with DevOps Automation
 
 ## Contributors
 
-* Ayaan Khan (22i-0832)
+* Ayaan Khan  (22i-0832)
 * Minahil Ali (22i-0849)
-* Mishal Ali (22i-1291)
-
-## Table of Contents
-
-1. Project Overview
-2. Architecture Overview
-3. Microservices Explained
-4. DevOps Stack and Workflows
-
-   * Docker and Docker Compose
-   * Kubernetes
-   * GitHub Actions CI/CD
-   * Terraform (Infrastructure as Code)
-   * Ansible (Configuration Management)
-   * Argo CD (GitOps Continuous Delivery)
-   * Prometheus & Grafana (Monitoring & Observability)
-5. Setup Instructions
-6. Testing Each Component
-7. Project Structure
-8. API Documentation
-9. Git Workflow
-10. License
+* Mishal Ali  (22i-1291)
 
 ---
 
 ## 1. Project Overview
 
-This project is a fully containerized microservices-based Event Booking platform built with DevOps-first principles. The system supports user registration, event listings, ticket bookings, payment processing, and notifications. Every major DevOps lifecycle aspect—CI/CD, Infrastructure Provisioning, Configuration Management, Observability, and GitOps-based delivery—is implemented using cutting-edge tools like:
+This project implements a cloud-native Event Booking System using a microservices architecture. The platform allows users to:
 
-* Docker & Docker Compose
-* Kubernetes
-* GitHub Actions
-* Argo CD
-* Terraform
-* Ansible
-* Prometheus
-* Grafana
+* Register and manage accounts
+* Browse and book events
+* Receive notifications after successful booking
+
+Each feature is modularized into dedicated services that communicate via REST and RabbitMQ. The system is containerized with Docker, orchestrated via Kubernetes, and automated using a complete DevOps stack (CI/CD, GitOps, Infrastructure as Code, Monitoring, and Configuration Management).
 
 ---
 
-## 2. Architecture Overview
+## 2. Microservices Overview
 
-The application is composed of the following microservices:
+| Service              | Language | Database   | Purpose                                    |
+| -------------------- | -------- | ---------- | ------------------------------------------ |
+| user-service         | FastAPI  | PostgreSQL | Manages registration, login, profiles      |
+| booking-service      | Flask    | PostgreSQL | Books events, processes payments, RabbitMQ |
+| new-event-service    | Node.js  | MongoDB    | Event CRUD and discovery                   |
+| notification-service | Node.js  | MongoDB    | Consumes booking events and notifies users |
 
-* User Service (FastAPI + PostgreSQL)
-* Event Service (Node.js + MongoDB)
-* Booking Service (Flask + PostgreSQL + RabbitMQ)
-* Notification Service (Express.js + MongoDB + RabbitMQ)
-
-All services are containerized and communicate via REST APIs and message queues. Metrics endpoints are exposed for monitoring via Prometheus and Grafana.
+Services are completely decoupled and interact via REST APIs and asynchronous message queues (RabbitMQ).
 
 ---
 
-## 3. Microservices Explained
+## 3. System Architecture
 
-| Microservice         | Tech Stack                    | Responsibilities                        |
-| -------------------- | ----------------------------- | --------------------------------------- |
-| User Service         | FastAPI, PostgreSQL           | Authentication, user profiles, frontend |
-| Event Service        | Node.js, MongoDB              | CRUD operations for events              |
-| Booking Service      | Flask, PostgreSQL, RabbitMQ   | Bookings, payments, publishes events    |
-| Notification Service | Express.js, MongoDB, RabbitMQ | Sends emails/alerts based on bookings   |
+### Logical Architecture
+
+* User interacts via a frontend (templated HTML rendered by user-service)
+* Each service runs independently in containers
+* Booking triggers RabbitMQ messages consumed by notification-service
+
+### Tech Stack
+
+| Component          | Stack                   |
+| ------------------ | ----------------------- |
+| Backend Services   | FastAPI, Flask, Node.js |
+| Messaging Queue    | RabbitMQ                |
+| Databases          | PostgreSQL, MongoDB     |
+| Containerization   | Docker, Docker Compose  |
+| Orchestration      | Kubernetes              |
+| GitOps             | Argo CD                 |
+| CI/CD              | GitHub Actions          |
+| Infra Provisioning | Terraform               |
+| Configuration Mgmt | Ansible                 |
+| Monitoring         | Prometheus + Grafana    |
 
 ---
 
@@ -72,224 +62,326 @@ All services are containerized and communicate via REST APIs and message queues.
 
 ### Docker and Docker Compose
 
-Each service has a Dockerfile. The docker-compose.yml builds and starts all services:
+All microservices include Dockerfiles.
 
-Start:
+To build and run everything locally:
 
+Start all containers:
+
+```bash
 docker-compose up --build -d
+```
 
-Stop:
+Stop and remove all containers and volumes:
 
+```bash
 docker-compose down -v
+```
 
-Docker allows consistent local and cloud execution.
+Docker ensures consistent builds and isolated environments.
+
+---
 
 ### Kubernetes
 
-Used for production-grade orchestration of services.
+Used to orchestrate production workloads with resilience and scalability.
 
 Apply manifests in sequence:
 
+```bash
 kubectl apply -f kubernetes/namespace.yaml
-kubectl apply -f kubernetes/deployment-service-\*.yaml
+kubectl apply -f kubernetes/deployment-service-*.yaml
 kubectl apply -f kubernetes/secrets.yaml
 kubectl apply -f kubernetes/configmap.yaml
 kubectl apply -f kubernetes/ingress.yaml
+```
 
-Ingress is configured via NGINX.
+Ingress Controller is managed via NGINX. You can use the following command to test locally:
 
-Test locally using:
-
+```bash
 kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
+```
+
+---
 
 ### GitHub Actions (CI/CD)
 
-Each microservice has its own GitHub Actions workflow (.github/workflows/):
+Each microservice has its own CI workflow in .github/workflows/
 
-On every push or PR to main:
+Actions include:
 
-* Builds Docker image
-* Pushes to Docker Hub
-* Updates Kubernetes Deployment YAML with new image tag
-* Commits back for Argo CD
+* On push or pull request to main branch
+* Build Docker image
+* Push to Docker Hub
+* Update Kubernetes deployment YAML with new image tag
+* Commit and push changes (for Argo CD auto-sync)
 
-CI and CD are completely automated.
+CI/CD is fully automated and follows modern DevOps practices.
+
+---
 
 ### Argo CD (GitOps Delivery)
 
-* Monitors Kubernetes YAML manifests in GitHub
+* Monitors GitHub repository for changes to Kubernetes manifests
 * Auto-syncs changes to live Kubernetes cluster
-* Hosted on localhost:8081 (via port forwarding)
-* Login using initial admin password
+* Port-forwarded to localhost:8081 for local access
 
-Deploy Application:
+Deploy the application:
 
+```bash
 kubectl apply -f kubernetes/argocd-application.yaml
+```
 
-Monitor:
+Monitor Argo CD state:
 
+```bash
 argocd app list
 argocd app sync online-event-booking
+```
+
+You can access the UI:
+
+* URL: [http://localhost:8081](http://localhost:8081)
+* Username: admin
+* Password: Retrieved from Kubernetes secret
+
+---
 
 ### Terraform (Infrastructure Provisioning)
 
-Provisions AWS EC2 infrastructure via IaC.
+Terraform provisions AWS infrastructure via Infrastructure-as-Code.
 
 Steps:
 
+```bash
 cd terraform
 terraform init
 terraform plan
 terraform apply
+```
 
-* Automatically creates EC2 instance
-* Outputs public IP
-* SSH using private key
+Outputs an EC2 instance public IP.
 
-Example:
+SSH into instance:
 
-ssh -i \~/.ssh/id\_rsa ec2-user@<public-ip>
+```bash
+ssh -i ~/.ssh/id_rsa ec2-user@<public-ip>
+```
+
+---
 
 ### Ansible (Configuration Management)
 
-Once EC2 is created, configure via:
+Once EC2 instance is ready, Ansible configures it:
 
+```bash
 cd ansible
 ansible-playbook site.yml
+```
 
-This:
+Installs:
 
-* Installs Docker, Docker Compose
-* Deploys services
-* Opens necessary ports
+* Docker
+* Docker Compose
+* Clones repo
+* Deploys microservices
 
-Verify via:
+Verify deployment:
 
-ssh into EC2
+```bash
+ssh ec2-user@<public-ip>
 docker ps
-curl [http://localhost](http://localhost)
+curl http://localhost
+```
+
+---
 
 ### Prometheus & Grafana (Monitoring & Observability)
 
-Instrumented metrics from:
+Services are instrumented with Prometheus clients:
 
-* User and Booking (Python: prometheus-fastapi-instrumentator)
-* Event and Notification (Node.js: prom-client)
+* user-service and booking-service: prometheus-fastapi-instrumentator
+* event-service and notification-service: prom-client and express-prom-bundle
 
-Helm charts used for deployment:
+Steps:
 
-helm repo add prometheus-community [https://prometheus-community.github.io/helm-charts](https://prometheus-community.github.io/helm-charts)
-helm repo add grafana [https://grafana.github.io/helm-charts](https://grafana.github.io/helm-charts)
+Install Helm:
+
+```bash
+choco install kubernetes-helm
+```
+
+Add Helm Repositories:
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+```
+
+Install Prometheus and Grafana:
+
+```bash
 helm install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace
 helm install grafana grafana/grafana --namespace monitoring
+```
 
-Access:
+Port forward to access dashboards:
 
+```bash
 kubectl port-forward svc/prometheus-server 9090:80 -n monitoring
 kubectl port-forward svc/grafana 3000:80 -n monitoring
+```
 
-Grafana credentials decoded from Kubernetes secret.
+Grafana credentials are stored in a Kubernetes secret. Retrieve them via:
+
+```powershell
+$encoded = kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}"
+[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encoded))
+```
 
 ---
 
 ## 5. Setup Instructions
 
-1. Clone Repository
+### Step 1: Clone Repository
 
-git clone [https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git](https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git)
+```bash
+git clone https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git
+cd Event-Booking-Microservices-DevOps-Project
+```
 
-2. Setup Environment Files
+---
 
-For each service (user, booking, event, notification), copy .env.example → .env and set appropriate DB URLs, keys, ports.
+### Step 2: Setup Environment Files
 
-3. Local Run via Docker Compose
+For each microservice directory (user-service, booking-service, new-event-service, notification-service):
 
+* Copy .env.example to .env
+* Update the DB URLs, secret keys, and service URLs accordingly
+
+---
+
+### Step 3: Local Development via Docker Compose
+
+Run all services locally:
+
+```bash
 docker-compose up --build -d
+```
 
-4. Kubernetes Setup
+Stop and clean up:
 
+```bash
+docker-compose down -v
+```
+
+---
+
+### Step 4: Kubernetes Setup
+
+```bash
 cd kubernetes
-Apply all manifests as described earlier.
+kubectl apply -f namespace.yaml
+kubectl apply -f deployment-service-postgres.yaml
+kubectl apply -f deployment-service-mongodb.yaml
+kubectl apply -f deployment-service-rabbitmq.yaml
+kubectl apply -f deployment-service-user.yaml
+kubectl apply -f deployment-service-event.yaml
+kubectl apply -f deployment-service-booking.yaml
+kubectl apply -f deployment-service-notification.yaml
+kubectl apply -f configmap.yaml
+kubectl apply -f secrets.yaml
+kubectl apply -f ingress.yaml
+```
 
-5. Argo CD Setup
+To test locally:
 
+```bash
+kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
+```
+
+---
+
+### Step 5: Argo CD Setup
+
+Install Argo CD:
+
+```bash
 kubectl apply -f argocd-namespace.yaml
-kubectl apply -n argocd -f [https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml)
-Expose ArgoCD:
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
+Expose Argo CD:
+
+```bash
 kubectl port-forward svc/argocd-server -n argocd 8081:443
+```
 
-6. Terraform + Ansible Deployment
+Get the admin password:
 
+```powershell
+$b64 = kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"
+$bytes = [Convert]::FromBase64String($b64)
+[Text.Encoding]::UTF8.GetString($bytes)
+```
+
+Deploy the Argo CD application:
+
+```bash
+kubectl apply -f kubernetes/argocd-application.yaml
+```
+
+Sync the app:
+
+```bash
+argocd app sync online-event-booking
+```
+
+---
+
+### Step 6: Provision Infrastructure via Terraform
+
+```bash
+cd terraform
+terraform init
+terraform plan
 terraform apply
-Copy IP and SSH into EC2
+```
+
+Copy the EC2 instance IP and SSH:
+
+```bash
+ssh -i ~/.ssh/id_rsa ec2-user@<public-ip>
+```
+
+---
+
+### Step 7: Deploy with Ansible
+
+Ensure IP and private key are updated in inventory.ini.
+
+Run the playbook:
+
+```bash
+cd ansible
 ansible-playbook site.yml
+```
 
 ---
 
-## 6. Testing Each Component
+## 6. Git Workflow
 
-* Test APIs: Postman / curl endpoints.
-* Test RabbitMQ: Use test-producer.js in notification-service.
-* Check Prometheus targets at localhost:9090
-* Monitor Grafana dashboards at localhost:3000
-* Confirm deployments via: kubectl get pods -n online-event-booking-ayaankhan
-
----
-
-## 7. Project Structure
-
-See the full project structure inside README above or explore directories:
-
-* user-service/
-* booking-service/
-* new-event-service/
-* notification-service/
-* terraform/
-* ansible/
-* kubernetes/
-* .github/workflows/
-
----
-
-## 8. API Documentation
-
-User Service:
-
-* POST /register
-* POST /login
-* GET /users/{id}
-
-Event Service:
-
-* GET /events
-* GET /events/{id}
-
-Booking Service:
-
-* POST /book
-* GET /bookings/{user\_id}
-
-Notification Service:
-
-* GET /notifications/{user\_id}
-
-All services return JSON.
-
----
-
-## 9. Git Workflow
-
+```bash
 git checkout -b feature-branch
-
-# make changes
-
+# Make changes
 git add .
-git commit -m "new feature"
+git commit -m "Add feature"
 git push origin feature-branch
+```
 
 ---
 
-## 10. License
+## 7. License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See LICENSE for details.
