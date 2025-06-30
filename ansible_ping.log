@@ -1,7 +1,0 @@
-3.89.224.253 | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python3.7"
-    },
-    "changed": false,
-    "ping": "pong"
-}
