@@ -1,264 +1,295 @@
-# CS4067 Event Booking Microservices
+# Event Booking Microservices Platform
 
 ## Contributors
-- **Ayaan Khan (22i-0832)**
-- **Minahil Ali (22i-0849)**
-- **Mishal Ali (22i-1291)**
 
-## Overview
-This repository contains the code for an Event Booking application built using a microservices architecture. The project is divided into the following services:
-- **User Service:** Handles user authentication and profiles.
-- **Event Service:** Manages event listings.
-- **Booking Service:** Manages ticket bookings, payment processing, and booking status.
-- **Notification Service:** Sends out confirmation notifications via email/SMS.
+* Ayaan Khan (22i-0832)
+* Minahil Ali (22i-0849)
+* Mishal Ali (22i-1291)
 
-## Repository Structure
-- **user-service/**: Code for user authentication and profile management.
-- **event-service/**: Code for event listing and management.
-- **booking-service/**: Code for processing bookings and integrating with RabbitMQ.
-- **notification-service/**: Code for handling notifications.
+## Table of Contents
 
-Event Booking Project  
-│   .gitignore             # Specifies files to ignore in Git version control  
-│   erl_crash.dump         # Erlang crash dump file (can be ignored or deleted)  
-│   help.txt               # Possibly a help file (contents unknown)  
-│   package-lock.json      # Dependency lock file for Node.js services  
-│   README.md              # Project documentation file  
-│   structure.txt          # Contains the project structure (likely this file)  
-│  
-├── booking-service        # Handles event booking and payment processing  
-│   │   .env               # Environment variables for configuration  
-│   │   .gitignore         # Git ignore file for booking service  
-│   │   booking-service.log # Log file for debugging  
-│   │   create_db.py       # Script to create and initialize the database  
-│   │   erl_crash.dump     # Erlang crash log (possibly from RabbitMQ)  
-│   │   README.md          # Documentation for the booking service  
-│   │   requirements.txt   # Python dependencies for this service  
-│   │   run.py             # Main entry point for the booking service  
-│   │  
-│   ├── app                # Core application logic  
-│   │   │   config.py      # Configuration settings  
-│   │   │   models.py      # Database models (tables and schemas)  
-│   │   │   tasks.py       # Background tasks (RabbitMQ processing)  
-│   │   │   utils.py       # Utility functions  
-│   │   │   views.py       # API endpoints for handling booking requests  
-│   │   │   __init__.py    # Marks the folder as a Python package  
-│   │   ├── __pycache__    # Cached Python files (can be ignored)  
-│   │  
-│   ├── migrations         # Database migration scripts  
-│   │   │   alembic.ini    # Alembic configuration for database migrations  
-│   │   │   env.py         # Migration environment settings  
-│   │   │   README         # Migration readme file  
-│   │   │   script.py.mako # Template for Alembic migrations  
-│   │  
-│   ├── __pycache__        # Cached Python files  
-│  
-├── new-event-service      # Manages events data (CRUD operations)  
-│   │   .gitignore         # Git ignore file for event service  
-│   │   package.json       # Dependencies and scripts for Node.js service  
-│   │   server.js          # Main entry point for the event service  
-│   │  
-│   ├── config  
-│   │   │   db.js          # Database connection settings  
-│   │  
-│   ├── controllers  
-│   │   │   eventController.js  # Handles event-related business logic  
-│   │  
-│   ├── models  
-│   │   │   Event.js       # Mongoose schema for events  
-│   │  
-│   ├── routes  
-│       │   eventRoutes.js # Defines API routes for events  
-│  
-├── notification-service   # Handles sending notifications (RabbitMQ consumer)  
-│   │   .env.example       # Example environment file  
-│   │   .gitignore         # Git ignore file for notification service  
-│   │   package-lock.json  # Dependency lock file  
-│   │   package.json       # Node.js dependencies  
-│   │   README.md          # Documentation for notification service  
-│   │   server.js          # Main entry point for the notification service  
-│   │   test-producer.js   # Script to test RabbitMQ message publishing  
-│  
-├── user-service           # Manages users and authentication (FastAPI)  
-│   │   .env               # Environment variables for configuration  
-│   │   .env.example       # Example environment file  
-│   │   .gitignore         # Git ignore file  
-│   │   auth.py            # Handles authentication (login, signup, JWT)  
-│   │   database.py        # Database connection logic (PostgreSQL)  
-│   │   main.py            # FastAPI app entry point  
-│   │   models.py          # User database models  
-│   │   README.md          # Documentation for user service  
-│   │   requirements.txt   # Python dependencies  
-│   │  
-│   ├── logs  
-│   │   │   user-service.log  # Log file for debugging  
-│   │  
-│   ├── routes  
-│   │   ├── frontend.py    # Handles HTML page rendering for users  
-│   │   ├── __pycache__    # Cached Python files  
-│   │  
-│   ├── static             # Static assets (CSS, images)  
-│   │   │   style.css      # Stylesheet for frontend  
-│   │  
-│   ├── templates          # HTML templates for the frontend  
-│   │   │   base.html          # Base template layout  
-│   │   │   booking_success.html # Booking confirmation page  
-│   │   │   book_ticket.html    # Ticket booking form  
-│   │   │   dashboard.html      # User dashboard  
-│   │   │   events.html         # Displays available events  
-│   │   │   home.html           # Homepage  
-│   │   │   login.html          # Login page  
-│   │   │   register.html       # Registration page  
-│   │  
-│   ├── __pycache__        # Cached Python files  
+1. Project Overview
+2. Architecture Overview
+3. Microservices Explained
+4. DevOps Stack and Workflows
 
+   * Docker and Docker Compose
+   * Kubernetes
+   * GitHub Actions CI/CD
+   * Terraform (Infrastructure as Code)
+   * Ansible (Configuration Management)
+   * Argo CD (GitOps Continuous Delivery)
+   * Prometheus & Grafana (Monitoring & Observability)
+5. Setup Instructions
+6. Testing Each Component
+7. Project Structure
+8. API Documentation
+9. Git Workflow
+10. License
 
+---
 
-## Architecture
+## 1. Project Overview
 
-### Microservices and Technologies:
-1. **User Service** (FastAPI, PostgreSQL, REST API)  
-   - Handles user authentication (registration, login, credential verification).
-   - Communicates with the Booking Service and Event Service via REST API.
+This project is a fully containerized microservices-based Event Booking platform built with DevOps-first principles. The system supports user registration, event listings, ticket bookings, payment processing, and notifications. Every major DevOps lifecycle aspect—CI/CD, Infrastructure Provisioning, Configuration Management, Observability, and GitOps-based delivery—is implemented using cutting-edge tools like:
 
-2. **Event Service** (Node.js, MongoDB, REST API)  
-   - Provides event details.
-   - Interacts with the Booking Service for event availability.
+* Docker & Docker Compose
+* Kubernetes
+* GitHub Actions
+* Argo CD
+* Terraform
+* Ansible
+* Prometheus
+* Grafana
 
-3. **Booking Service** (Flask, PostgreSQL, REST API, RabbitMQ)  
-   - Handles event booking and payment processing.
-   - Publishes booking confirmation events asynchronously via RabbitMQ.
+---
 
-4. **Notification Service** (Express.js, MongoDB, RabbitMQ)  
-   - Listens for booking confirmation messages via RabbitMQ.
-   - Sends notifications to users.
+## 2. Architecture Overview
 
-### Communication Flow:
-- **User Service** interacts with **Booking Service** and **Event Service** via REST API.
-- **Booking Service** processes payments and publishes booking confirmations via **RabbitMQ**.
-- **Notification Service** listens for booking events in **RabbitMQ** and sends notifications.
+The application is composed of the following microservices:
 
-## API Documentation
+* User Service (FastAPI + PostgreSQL)
+* Event Service (Node.js + MongoDB)
+* Booking Service (Flask + PostgreSQL + RabbitMQ)
+* Notification Service (Express.js + MongoDB + RabbitMQ)
 
-### User Service (REST API)
-#### Authentication Endpoints
-- **POST /register** – Create a new user account.
-- **POST /login** – Authenticate a user and return a token.
-- **GET /users/{user_id}** – Retrieve user details.
-- **GET /events - Retrieve evevbt details
+All services are containerized and communicate via REST APIs and message queues. Metrics endpoints are exposed for monitoring via Prometheus and Grafana.
 
-### Event Service (REST API)
-#### Event Endpoints
-- **GET /events** – Retrieve all events.
-- **GET /events/{event_id}** – Retrieve a specific event.
+---
 
-### Booking Service (RabbitMQ and REST API)
-#### Booking Endpoints
-- **POST /book** – Book an event and process payment.
-- **GET /bookings/{user_id}** – Retrieve user’s booking history.
+## 3. Microservices Explained
 
-### Notification Service (REST API)
-#### Notification Endpoints
-- **GET /notifications/{user_id}** – Retrieve user notifications.
+| Microservice         | Tech Stack                    | Responsibilities                        |
+| -------------------- | ----------------------------- | --------------------------------------- |
+| User Service         | FastAPI, PostgreSQL           | Authentication, user profiles, frontend |
+| Event Service        | Node.js, MongoDB              | CRUD operations for events              |
+| Booking Service      | Flask, PostgreSQL, RabbitMQ   | Bookings, payments, publishes events    |
+| Notification Service | Express.js, MongoDB, RabbitMQ | Sends emails/alerts based on bookings   |
 
-## Setup Guide
+---
 
-### 1. Clone the Repository
-```sh
-$ git clone <repo-url>
-$ cd event-booking-system
-```
+## 4. DevOps Stack and Workflows
 
-### 2. Setup Environment Variables
-Create a `.env` file in each microservice directory with the following variables:
+### Docker and Docker Compose
 
-#### User Service (`.env`)
-```
-DATABASE_URL=postgresql://user:password@localhost/userdb
-SECRET_KEY=your_secret_key
-```
+Each service has a Dockerfile. The docker-compose.yml builds and starts all services:
 
-#### Notification Service (`.env`)
-```
-MONGO_URI=mongodb://localhost:27017/notifications
-RABBITMQ_URL=amqp://guest:guest@localhost:5672/
-```
-
-### 3. Run Services
-#### Start PostgreSQL & MongoDB
-Ensure PostgreSQL and MongoDB are running before starting the services.
-
-#### Start RabbitMQ
-
-#### Run User Service
-```sh
-cd user-service
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-#### Run Event Service
-```sh
-cd event-service
-npm install
-node server.js
-```
-
-#### Run Booking Service
-```sh
-cd booking-service
-pip install -r requirements.txt
-python create_db.py
-python run.py
-```
-
-#### Run Notification Service
-```sh
-cd notification-service
-npm install
-node server.js
-```
-
-
-## Docker Compose:
+Start:
 
 docker-compose up --build -d
+
+Stop:
+
 docker-compose down -v
 
+Docker allows consistent local and cloud execution.
 
-## Kubernetes:
+### Kubernetes
 
-Go to kubernetes/ folder
+Used for production-grade orchestration of services.
 
-kubectl apply -f namespace.yaml
+Apply manifests in sequence:
 
-kubectl apply -f deployment-service-postgres.yaml
-kubectl apply -f deployment-service-mongodb.yaml
-kubectl apply -f deployment-service-rabbitmq.yaml
-kubectl apply -f deployment-service-user.yaml
-kubectl apply -f deployment-service-event.yaml
-kubectl apply -f deployment-service-booking.yaml
-kubectl apply -f deployment-service-notification.yaml
+kubectl apply -f kubernetes/namespace.yaml
+kubectl apply -f kubernetes/deployment-service-\*.yaml
+kubectl apply -f kubernetes/secrets.yaml
+kubectl apply -f kubernetes/configmap.yaml
+kubectl apply -f kubernetes/ingress.yaml
 
-kubectl apply -f configmap.yaml
-kubectl apply -f secrets.yaml
+Ingress is configured via NGINX.
 
-kubectl apply -f ingress.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
+Test locally using:
 
 kubectl port-forward svc/user-service 8000:80 -n online-event-booking-ayaankhan
 
-## Git Workflow
-```sh
+### GitHub Actions (CI/CD)
+
+Each microservice has its own GitHub Actions workflow (.github/workflows/):
+
+On every push or PR to main:
+
+* Builds Docker image
+* Pushes to Docker Hub
+* Updates Kubernetes Deployment YAML with new image tag
+* Commits back for Argo CD
+
+CI and CD are completely automated.
+
+### Argo CD (GitOps Delivery)
+
+* Monitors Kubernetes YAML manifests in GitHub
+* Auto-syncs changes to live Kubernetes cluster
+* Hosted on localhost:8081 (via port forwarding)
+* Login using initial admin password
+
+Deploy Application:
+
+kubectl apply -f kubernetes/argocd-application.yaml
+
+Monitor:
+
+argocd app list
+argocd app sync online-event-booking
+
+### Terraform (Infrastructure Provisioning)
+
+Provisions AWS EC2 infrastructure via IaC.
+
+Steps:
+
+cd terraform
+terraform init
+terraform plan
+terraform apply
+
+* Automatically creates EC2 instance
+* Outputs public IP
+* SSH using private key
+
+Example:
+
+ssh -i \~/.ssh/id\_rsa ec2-user@<public-ip>
+
+### Ansible (Configuration Management)
+
+Once EC2 is created, configure via:
+
+cd ansible
+ansible-playbook site.yml
+
+This:
+
+* Installs Docker, Docker Compose
+* Deploys services
+* Opens necessary ports
+
+Verify via:
+
+ssh into EC2
+docker ps
+curl [http://localhost](http://localhost)
+
+### Prometheus & Grafana (Monitoring & Observability)
+
+Instrumented metrics from:
+
+* User and Booking (Python: prometheus-fastapi-instrumentator)
+* Event and Notification (Node.js: prom-client)
+
+Helm charts used for deployment:
+
+helm repo add prometheus-community [https://prometheus-community.github.io/helm-charts](https://prometheus-community.github.io/helm-charts)
+helm repo add grafana [https://grafana.github.io/helm-charts](https://grafana.github.io/helm-charts)
+helm install prometheus prometheus-community/prometheus --namespace monitoring --create-namespace
+helm install grafana grafana/grafana --namespace monitoring
+
+Access:
+
+kubectl port-forward svc/prometheus-server 9090:80 -n monitoring
+kubectl port-forward svc/grafana 3000:80 -n monitoring
+
+Grafana credentials decoded from Kubernetes secret.
+
+---
+
+## 5. Setup Instructions
+
+1. Clone Repository
+
+git clone [https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git](https://github.com/AyaanKhan1576/Event-Booking-Microservices-DevOps-Project.git)
+
+2. Setup Environment Files
+
+For each service (user, booking, event, notification), copy .env.example → .env and set appropriate DB URLs, keys, ports.
+
+3. Local Run via Docker Compose
+
+docker-compose up --build -d
+
+4. Kubernetes Setup
+
+cd kubernetes
+Apply all manifests as described earlier.
+
+5. Argo CD Setup
+
+kubectl apply -f argocd-namespace.yaml
+kubectl apply -n argocd -f [https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml)
+Expose ArgoCD:
+
+kubectl port-forward svc/argocd-server -n argocd 8081:443
+
+6. Terraform + Ansible Deployment
+
+terraform apply
+Copy IP and SSH into EC2
+ansible-playbook site.yml
+
+---
+
+## 6. Testing Each Component
+
+* Test APIs: Postman / curl endpoints.
+* Test RabbitMQ: Use test-producer.js in notification-service.
+* Check Prometheus targets at localhost:9090
+* Monitor Grafana dashboards at localhost:3000
+* Confirm deployments via: kubectl get pods -n online-event-booking-ayaankhan
+
+---
+
+## 7. Project Structure
+
+See the full project structure inside README above or explore directories:
+
+* user-service/
+* booking-service/
+* new-event-service/
+* notification-service/
+* terraform/
+* ansible/
+* kubernetes/
+* .github/workflows/
+
+---
+
+## 8. API Documentation
+
+User Service:
+
+* POST /register
+* POST /login
+* GET /users/{id}
+
+Event Service:
+
+* GET /events
+* GET /events/{id}
+
+Booking Service:
+
+* POST /book
+* GET /bookings/{user\_id}
+
+Notification Service:
+
+* GET /notifications/{user\_id}
+
+All services return JSON.
+
+---
+
+## 9. Git Workflow
+
 git checkout -b feature-branch
-# Make changes
+
+# make changes
+
 git add .
-git commit -m "Added new feature"
+git commit -m "new feature"
 git push origin feature-branch
-```
 
+---
 
-## License
+## 10. License
+
 This project is licensed under the MIT License.
-
-
