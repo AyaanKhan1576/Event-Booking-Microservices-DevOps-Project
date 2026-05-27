@@ -35,6 +35,8 @@ Services are completely decoupled and interact via REST APIs and asynchronous me
 
 ## 3. System Architecture
 
+![System Architecture](images/Event-Booking_System-Architecture.png)
+
 ### Logical Architecture
 
 * User interacts via a frontend (templated HTML rendered by user-service)
